@@ -2,24 +2,26 @@
     <div class="crud">
         <Row type="flex" justify="space-between" align="middle" class-name="header-actions">
             <Col :xs="24" :sm="24" :md="12">
-                <Button v-if="hasAddBtn" type="primary" icon="md-add" @click="handleAdd" style="margin-right:10px;"
-                    >添加</Button
-                >
+                <Button v-if="hasAddBtn" type="primary" icon="md-add" @click="handleAdd">添加</Button>
                 <Button v-if="hasBatchDelBtn" type="error" icon="md-trash" @click="handleBatchDelete">批量删除</Button>
+                <Button v-if="hasExportCsvBtn" type="warning" icon="md-download" @click="handleExportCsv"
+                    >导出csv</Button
+                >
                 <slot name="left-actions"></slot>
             </Col>
             <Col>
                 <slot name="right-actions"></slot>
             </Col>
         </Row>
-        <Table :data="dataSource" :columns="columns" :loading="loading" v-bind="this.$attrs">
+        <Table :data="dataSource" :columns="columns" :loading="loading" v-bind="this.$attrs" ref="crud-table">
             <template slot="row-actions" slot-scope="{ row }">
-                <slot name="custom-row-actions" v-bind:row="row">
-                    <div class="default-actions">
+                <div class="row-actions">
+                    <slot name="rewrite-row-actions" v-bind:row="row">
                         <Button v-if="hasRowEditBtn" type="primary" size="small" @click="handleEdit(row)">编辑</Button>
                         <Button v-if="hasRowDelBtn" type="error" size="small" @click="handleDelete(row)">删除</Button>
-                    </div>
-                </slot>
+                    </slot>
+                    <slot name="append-row-actions" v-bind:row="row"></slot>
+                </div>
             </template>
         </Table>
         <Row type="flex" justify="end" style="margin:15px 0;" v-if="pageConfig">
@@ -106,6 +108,16 @@ export default {
             type: Boolean,
             default: true
         },
+        hasExportCsvBtn: {
+            type: Boolean,
+            default: true
+        },
+        exportCsvConfig: {
+            type: Object,
+            default() {
+                return {};
+            }
+        },
         // 分页
         // 是否分页，有则必须配置pageConfig
         pageConfig: {
@@ -143,9 +155,9 @@ export default {
     },
     methods: {
         init() {
-            this.pushRowActionsToRow();
+            this.initColumns();
         },
-        pushRowActionsToRow() {
+        initColumns() {
             let columns = this.columns;
             if (!columns.find(item => item.slot === 'row-actions')) {
                 columns.push({
@@ -197,6 +209,9 @@ export default {
                     this.onBatchDelete();
                 }
             });
+        },
+        handleExportCsv() {
+            this.$refs['crud-table'].exportCsv(this.exportCsvConfig);
         }
     }
 };
@@ -204,7 +219,7 @@ export default {
 
 <style lang="less" scoped>
 .crud {
-    .default-actions {
+    .row-actions {
         text-align: center;
         button {
             margin-right: 10px;
@@ -212,6 +227,9 @@ export default {
     }
     .header-actions {
         margin: 15px 0;
+        button {
+            margin-right: 10px;
+        }
     }
 }
 </style>

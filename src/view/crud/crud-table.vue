@@ -12,14 +12,21 @@
             :onDeleteRow="handleDeleteRow"
             :pageConfig="pageConfig"
             @on-change="handlePageChange"
-            :hasBatchDelBtn="false"
+            :hasBatchDelBtn="true"
         >
-            <!-- <template slot="custom-row-actions" slot-scope="{ row }">
+            <!-- 重写行操作 -->
+            <!-- <template slot="rewrite-row-actions" slot-scope="{ row }">
                 <p>{{ row.name }}</p>
             </template> -->
+            <!-- 添加行操作 -->
+            <template slot="append-row-actions" slot-scope="{ row }">
+                <span>添加span{{ row.name }}</span>
+            </template>
+            <!-- 添加顶部左侧操作 -->
             <template slot="left-actions">
                 <button>left</button>
             </template>
+            <!-- 添加顶部右侧操作 -->
             <template slot="right-actions">
                 <button>right</button>
             </template>
@@ -49,24 +56,27 @@ export default {
                     id: 123,
                     name: '张三',
                     age: 12,
-                    type: '学生'
+                    type: '学生',
+                    avatar: 'https://cn.vuejs.org/images/logo.png'
                 },
                 {
                     id: 1234,
                     name: '李四',
                     age: 22,
-                    type: '老师'
+                    type: '老师',
+                    avatar: 'https://cn.vuejs.org/images/logo.png'
                 }
             ],
             columns: [
                 {
                     type: 'expand', // 无需设置render函数，会自动注入 | 设置render函数则按照render函数来渲染
-                    width:60,
+                    width: 60,
                     // expandedColumns: ['name', 'age', 'type'], // 展开的key，和名称,不填名称默认和表格的title一致
                     expandedColumns: [
                         'name',
                         { label: '年龄2', key: 'age' },
-                        { label: '类型', key: 'type', value: key => 'hello' }
+                        { label: '类型', key: 'type', value: key => 'hello' },
+                        'avatar'
                     ],
                     colNum: 3 // 每列几个字段
                 },
@@ -85,12 +95,17 @@ export default {
                 {
                     title: '类型',
                     key: 'type'
+                },
+                {
+                    title: '头像',
+                    key: 'avatar'
                 }
             ],
             formData: {
                 name: '',
                 age: '',
-                type: '学生'
+                type: '学生',
+                avatar: ''
             },
             formColumns: [
                 {
@@ -117,6 +132,18 @@ export default {
                             value: '老师'
                         }
                     ]
+                },
+                {
+                    label: '头像',
+                    prop: 'avatar',
+                    type: 'image',
+                    uploadConfig: {
+                        action: 'https://www.baidu.com',
+                        'on-error': (error, file, fileList) => {
+                            console.log(this);
+                            console.log({ error, file, fileList });
+                        }
+                    }
                 }
             ],
             rules: {
@@ -153,6 +180,3 @@ export default {
     }
 };
 </script>
-
-<style>
-</style>

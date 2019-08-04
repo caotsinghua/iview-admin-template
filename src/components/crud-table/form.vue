@@ -4,7 +4,7 @@
             <Col :xs="xs" :sm="xs" :md="md" v-for="col in row" :key="col.label">
                 <FormItem :label="col.label" :prop="col.prop">
                     <Input
-                        v-if="col.type !== 'date' && col.type !== 'datetime' && col.type !== 'select'"
+                        v-if="isDefaultType(col.type)"
                         :type="col.type"
                         v-model="formData[col.prop]"
                         :placeholder="`请输入${col.label}...`"
@@ -23,6 +23,20 @@
                         :placeholder="`请选择${col.label}`"
                         :disabled="loading"
                     ></DatePicker>
+                    <Upload v-if="col.type === 'file' || col.type === 'image'" v-bind="col.uploadConfig">
+                        <div class="inner-upload">
+                            <img
+                                v-if="col.type === 'image' && !!formData[col.prop]"
+                                :src="formData[col.prop]"
+                                class="upload-image"
+                            />
+                            <Icon
+                                type="ios-cloud-upload"
+                                size="20"
+                                :class="['upload-icon', { 'default-visible': !formData[col.prop] }]"
+                            ></Icon>
+                        </div>
+                    </Upload>
                 </FormItem>
             </Col>
         </Row>
@@ -35,18 +49,20 @@
  * {
  *  label:string,
  *  prop:string,
- *  type:string,// input支持的type | select | date|datetime,
- *  format:string//见iview的datepicker的format参数
+ *  type:string,// input支持的type | select | date|datetime | file | image,
+ *  format:string,//见iview的datepicker的format参数
  *  dicts:[
  *    {
  *      label:string,
  *      value:string
  *    }
- *  ]
+ *  ],
+ *  uploadConfig:{} //upload组件的prop信息
  * }
  * ]
  */
 export default {
+    name: 'mine-crud-form',
     inject: ['formData', 'onCreateForm', 'onUpdateForm', 'rules', 'formColumns'],
     props: ['loading'],
     data() {
@@ -71,11 +87,8 @@ export default {
                 }
                 const temp = this.formColumns[i];
                 columns[cur].push({
-                    label: temp.label,
-                    prop: temp.prop,
-                    type: temp.type,
-                    dicts: temp.dicts || [],
-                    format: temp.format
+                    ...temp,
+                    dicts: temp.dicts || []
                 });
             }
             this.columns = columns;
@@ -106,12 +119,55 @@ export default {
         },
         clearForm() {
             this.$refs['form'].resetFields();
+        },
+        isDefaultType(type) {
+            const otherTypes = ['select', 'date', 'datetime', 'file', 'image'];
+            const hasType = otherTypes.find(item => item === type);
+            return !hasType;
         }
     }
 };
 </script>
 
 <style lang="less" scoped>
-.form-row {
+.inner-upload {
+    width: 60px;
+    height: 60px;
+    border: 1px dashed rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    position: relative;
+    transition: 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    &:hover {
+        box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.3);
+        .upload-icon {
+            opacity: 1;
+        }
+    }
+    .upload-image {
+        position: absolute;
+        z-index: 2;
+        width: 50px;
+        height: 50px;
+        display: block;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .upload-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        z-index: 10;
+        text-align: center;
+        line-height: 60px;
+        color: #fff;
+        opacity: 0;
+        &.default-visible {
+            opacity: 1;
+        }
+    }
 }
 </style>
