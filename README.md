@@ -34,7 +34,7 @@ iView Admin
 
 ## mine-crud 组件
 
-涉及 iview 组件：table，page，button，Modal，Form
+[文档地址](https://jolly-shaw-eee7e6.netlify.com)
 
 功能：
 
