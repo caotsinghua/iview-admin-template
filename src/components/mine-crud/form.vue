@@ -19,7 +19,7 @@
                         v-if="col.type === 'date' || col.type === 'datetime'"
                         v-model="formData[col.prop]"
                         :type="col.type"
-                        :format="col.format"
+                        :format="col.format || ''"
                         :placeholder="`请选择${col.label}`"
                         :disabled="loading"
                     ></DatePicker>
@@ -97,11 +97,19 @@ export default {
             this.isEdit = !!row;
             if (row) {
                 // 直接用列表初始化表单
-                Object.assign(this.formData, row);
+                Object.keys(row).forEach(key => {
+                    const keyObj = this.formColumns.find(col => col.prop === key);
+                    if (keyObj && keyObj.type && keyObj.type.indexOf('time') > -1) {
+                        this.formData[key] = new Date(row[key]);
+                    } else {
+                        this.formData[key] = row[key];
+                    }
+                });
             }
         },
         async submit() {
             const valid = await this.$refs['form'].validate();
+            console.log(this.formData);
             if (valid) {
                 try {
                     if (this.isEdit) {

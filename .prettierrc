@@ -6,7 +6,8 @@
     "semi": true,
     "trailingComma": "none",
     "bracketSpacing": true,
-    "overrides": [{
+    "overrides": [
+        {
             "files": ".prettierrc",
             "options": {
                 "parser": "json"

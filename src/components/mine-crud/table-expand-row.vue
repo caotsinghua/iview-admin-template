@@ -62,7 +62,7 @@ export default {
 
                     if (curKeyOrObj.value) {
                         if (typeof curKeyOrObj.value === 'function') {
-                            value = curKeyOrObj.value(curKeyOrObj.key);
+                            value = curKeyOrObj.value(curKeyOrObj.key, this.row);
                         } else {
                             value = curKeyOrObj.value;
                         }

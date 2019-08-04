@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import MineCrud from '../../components/crud-table';
+import MineCrud from '../../components/mine-crud';
 export default {
     name: 'crud-table',
     components: {

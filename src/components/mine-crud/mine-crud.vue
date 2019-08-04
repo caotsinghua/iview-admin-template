@@ -13,7 +13,14 @@
                 <slot name="right-actions"></slot>
             </Col>
         </Row>
-        <Table :data="dataSource" :columns="columns" :loading="loading" v-bind="this.$attrs" ref="crud-table">
+        <Table
+            :data="dataSource"
+            :columns="columns"
+            :loading="loading"
+            v-bind="this.$attrs"
+            ref="crud-table"
+            v-on="tableListeners"
+        >
             <template slot="row-actions" slot-scope="{ row }">
                 <div class="row-actions">
                     <slot name="rewrite-row-actions" v-bind:row="row">
@@ -128,7 +135,8 @@ export default {
         // 增加/编辑/删除,当提交请求时的处理函数，edit/delete传入当前row信息
         onCreateForm: Function,
         onUpdateForm: Function,
-        onDeleteRow: Function
+        onDeleteRow: Function,
+        onBatchDelete: Function
     },
     data() {
         return {
@@ -150,8 +158,6 @@ export default {
     },
     created() {
         this.init();
-        console.log(this.$attrs);
-        console.log(this.$listeners);
     },
     methods: {
         init() {
@@ -204,7 +210,7 @@ export default {
         handleBatchDelete() {
             this.$Modal.confirm({
                 title: '警告',
-                content: '确定删除zhexie数据吗？',
+                content: '确定删除这些数据吗？',
                 onOk: () => {
                     this.onBatchDelete();
                 }
