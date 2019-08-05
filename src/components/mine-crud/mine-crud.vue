@@ -135,7 +135,9 @@ export default {
         onCreateForm: Function,
         onUpdateForm: Function,
         onDeleteRow: Function,
-        onBatchDelete: Function
+        onBatchDelete: Function,
+        rowActionsWidth: Number,
+        rowActionsFixed: String // left|right
     },
     data() {
         return {
@@ -165,11 +167,16 @@ export default {
         initColumns() {
             let columns = this.columns;
             if (!columns.find(item => item.slot === 'row-actions')) {
-                columns.push({
+                const actionColumn = {
                     title: '操作',
                     slot: 'row-actions',
-                    align: 'center'
-                });
+                    align: 'center',
+                    width: this.rowActionsWidth || 150
+                };
+                if (this.rowActionsFixed) {
+                    actionColumn.fixed = this.rowActionsFixed;
+                }
+                columns.push(actionColumn);
             }
             if (this.hasBatchDelBtn && !columns.find(item => item.type === 'selection')) {
                 columns.unshift({

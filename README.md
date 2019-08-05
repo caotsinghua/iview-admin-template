@@ -54,9 +54,3 @@ iView Admin
     -   [o] 自定义弹出框内容（自定义行操作按钮，覆盖原操作）
     -   [x] 表单上传文件 (formColumns 里的 type 为 file 或 image，将 Upload 组件的 props 写在 uploadConfig 中)
 
-### 示例
-
-```
-
-
-```

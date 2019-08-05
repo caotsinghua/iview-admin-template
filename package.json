@@ -4,8 +4,10 @@
     "author": "Lison<lison16new@163.com>",
     "private": false,
     "scripts": {
-        "dev": "vue-cli-service serve --open",
+        "dev": "cross-env BUILD_ENV=development vue-cli-service serve --open",
         "build": "vue-cli-service build",
+        "build:test":"cross-env BUILD_ENV=test npm run build",
+        "build:prod":"cross-env BUILD_ENV=production npm run build",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "test:e2e": "vue-cli-service test:e2e",

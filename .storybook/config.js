@@ -1,5 +1,6 @@
-import { configure, addDecorator,addParameters } from '@storybook/vue';
+import { configure, addDecorator, addParameters } from '@storybook/vue';
 import { addReadme, configureReadme } from 'storybook-readme/vue';
+import { themes, create } from '@storybook/theming';
 import Vue from 'vue';
 import iView from 'iview';
 
@@ -14,16 +15,27 @@ function loadStories() {
     req.keys().forEach(filename => req(filename));
 }
 
+const basicTheme = create({
+    base: 'light',
+    brandTitle: 'custom-admin-docs',
+    brandUrl: 'https://github.com/tuchk4/storybook-readme',
+    brandImage: null,
+
+});
+
 addParameters({
-  options:{
-    showPanel: true,
-    /**
-     * where to show the addon panel
-     * @type {('bottom'|'right')}
-     */
-    panelPosition: 'right',
-  }
-})
+    options: {
+        showPanel: true,
+        panelPosition: 'right',
+        theme: basicTheme
+        // theme: themes.dark,
+    },
+    readme: {
+        // You can set the global code theme here.
+        // codeTheme: 'xonokai'
+        codeTheme:'github'
+    }
+});
 addDecorator(addReadme);
 configureReadme({
     StoryPreview: {
@@ -47,7 +59,7 @@ configureReadme({
                 styles: {
                     padding: '8px 32px',
                     margin: '0 0 0 32px',
-                    borderLeft: '4px dashed #eee'
+                    // borderLeft: '4px dashed #eee'
                 }
             };
         },

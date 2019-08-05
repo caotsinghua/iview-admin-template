@@ -1,10 +1,11 @@
 import { storiesOf } from '@storybook/vue';
 // import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
-import { withKnobs, number, text, boolean } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 import Basic from './MineCrudBasic.vue';
 import overview from './overview.md';
+import usage from './usage.md';
 import SlotAppendRowActions from './slot-append-row-actions.vue';
 import SlotAppendRowActionsMd from './slot-append-row-actions.md';
 import SlotRewriteRowActions from './slot-rewrite-row-actions.vue';
@@ -17,8 +18,7 @@ storiesOf('MineCrud', module)
     .addParameters({
         readme: {
             content: overview,
-            sidebar: overview,
-            codeTheme: 'github'
+            sidebar: usage
         }
     })
     .add('总览', () => ({
@@ -42,13 +42,18 @@ storiesOf('MineCrud', module)
                 default: boolean('hasExportCsvBtn', true)
             }
         },
-        template: `<Basic :hasRowDelBtn="hasRowDelBtn" :hasRowEditBtn="hasRowEditBtn" :hasBatchDelBtn="hasBatchDelBtn" :hasAddBtn="hasAddBtn" :hasExportCsvBtn="hasExportCsvBtn" />`
+        template: `<Basic
+        :hasRowDelBtn="hasRowDelBtn"
+        :hasRowEditBtn="hasRowEditBtn"
+        :hasBatchDelBtn="hasBatchDelBtn"
+        :hasAddBtn="hasAddBtn"
+        :hasExportCsvBtn="hasExportCsvBtn"
+        />`
     }))
     .addParameters({
         readme: {
             content: SlotAppendRowActionsMd,
-            sidebar: SlotAppendRowActionsMd,
-            codeTheme: 'github'
+            sidebar: usage
         }
     })
     .add('slot:添加行内操作', () => ({
@@ -62,8 +67,7 @@ storiesOf('MineCrud', module)
     .addParameters({
         readme: {
             content: SlotRewriteRowActionsMd,
-            sidebar: SlotRewriteRowActionsMd,
-            codeTheme: 'github'
+            sidebar: usage
         }
     })
     .add('slot:覆盖行内操作', () => ({
@@ -77,8 +81,7 @@ storiesOf('MineCrud', module)
     .addParameters({
         readme: {
             content: SlotLeftActionsMd,
-            sidebar: SlotLeftActionsMd,
-            codeTheme: 'github'
+            sidebar: usage
         }
     })
     .add('slot:添加顶部左侧操作', () => ({
