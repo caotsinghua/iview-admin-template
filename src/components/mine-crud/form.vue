@@ -109,7 +109,6 @@ export default {
         },
         async submit() {
             const valid = await this.$refs['form'].validate();
-            console.log(this.formData);
             if (valid) {
                 try {
                     if (this.isEdit) {

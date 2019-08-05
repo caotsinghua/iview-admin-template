@@ -2,7 +2,7 @@
     <div>
         <h1>crud</h1>
         <MineCrud
-            :dataSource="dataSource"
+            :data="data"
             :columns="columns"
             :formColumns="formColumns"
             :formData="formData"
@@ -12,7 +12,7 @@
             :onDeleteRow="handleDeleteRow"
             :pageConfig="pageConfig"
             @on-change="handlePageChange"
-            :hasBatchDelBtn="true"
+            :hasBatchDelBtn="false"
         >
             <!-- 重写行操作 -->
             <!-- <template slot="rewrite-row-actions" slot-scope="{ row }">
@@ -51,7 +51,7 @@ export default {
             }
         };
         return {
-            dataSource: [
+            data: [
                 {
                     id: 123,
                     name: '张三',
@@ -69,13 +69,16 @@ export default {
             ],
             columns: [
                 {
+                    type: 'selection'
+                },
+                {
                     type: 'expand', // 无需设置render函数，会自动注入 | 设置render函数则按照render函数来渲染
                     width: 60,
                     // expandedColumns: ['name', 'age', 'type'], // 展开的key，和名称,不填名称默认和表格的title一致
                     expandedColumns: [
                         'name',
                         { label: '年龄2', key: 'age' },
-                        { label: '类型', key: 'type', value: key => 'hello' },
+                        { label: '类型', key: 'type', value: (key, row) => row[key] },
                         'avatar'
                     ],
                     colNum: 3 // 每列几个字段

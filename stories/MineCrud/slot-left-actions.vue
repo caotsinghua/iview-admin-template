@@ -5,60 +5,39 @@
         :formColumns="formColumns"
         :formData="formData"
         :rules="rules"
-        :hasRowDelBtn="hasRowDelBtn"
-        :hasRowEditBtn="hasRowEditBtn"
-        :hasAddBtn="hasAddBtn"
-        :hasBatchDelBtn="hasBatchDelBtn"
-        :hasExportCsvBtn="hasExportCsvBtn"
         :onUpdateForm="handleUpdateForm"
         :onCreateForm="handleCreateForm"
         :onDeleteRow="handleDeleteRow"
-        :pageConfig="pageConfig"
         :onBatchDelete="handleBatchDelete"
-        @on-selection-change="handleSelectionChange"
-        @on-change="handlePageChange"
-        @on-page-size-change="handlePageSizeChange"
-    ></mine-crud>
+        border
+        stripe
+    >
+        <template slot="left-actions">
+            <Dropdown>
+                <Button>
+                    更多操作
+                    <Icon type="ios-arrow-down"></Icon>
+                </Button>
+                <DropdownMenu slot="list">
+                    <DropdownItem>操作1</DropdownItem>
+                    <DropdownItem>操作2</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        </template>
+    </mine-crud>
 </template>
 
 <script>
 import MineCrud from '../../src/components/mine-crud';
-import store, { types } from './store';
-
+import store from './store';
 export default {
     components: {
         MineCrud
     },
-    props: ['hasRowDelBtn', 'hasRowEditBtn', 'hasBatchDelBtn', 'hasAddBtn', 'hasExportCsvBtn'],
     data() {
         return {
             sharedState: store.state,
             columns: [
-                {
-                    type: 'expand', // 无需设置render函数，会自动注入 | 设置render函数则按照render函数来渲染
-                    width: 60,
-                    // expandedColumns: ['name', 'age', 'type'], // 展开的key，和名称,不填名称默认和表格的title一致
-                    expandedColumns: [
-                        // 展开详情
-                        'title',
-                        'avatar',
-                        { label: '作者', key: 'author' },
-                        {
-                            label: '发表时间',
-                            key: 'publishTime',
-                            value: (key, row) => {
-                                return row[key];
-                            }
-                        },
-                        {
-                            key: 'type',
-                            value: (key, row) => {
-                                return types[row[key]];
-                            }
-                        }
-                    ],
-                    colNum: 3 // 每列几个字段
-                },
                 {
                     title: 'id',
                     key: 'id'
@@ -68,14 +47,6 @@ export default {
                     key: 'title'
                 },
                 {
-                    title: '类别',
-                    align: 'center',
-                    key: 'type',
-                    render: (h, { row }) => {
-                        return h('span', types[row['type']]);
-                    }
-                },
-                {
                     title: '作者',
                     key: 'author'
                 },
@@ -83,7 +54,6 @@ export default {
                     title: '头像',
                     key: 'avatar'
                 },
-
                 {
                     title: '发表时间',
                     key: 'publishTime'
@@ -93,8 +63,7 @@ export default {
                 title: '',
                 author: '',
                 publishTime: '',
-                avatar: '',
-                type: ''
+                avatar: ''
             },
             formColumns: [
                 {
@@ -117,15 +86,6 @@ export default {
                     label: '发表时间',
                     prop: 'publishTime',
                     type: 'datetime'
-                },
-                {
-                    label: '类型',
-                    prop: 'type',
-                    type: 'select',
-                    dicts: Object.keys(types).map(key => ({
-                        label: types[key],
-                        value: key
-                    }))
                 }
             ],
             rules: {
@@ -195,3 +155,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.container {
+    padding: 20px;
+}
+</style>

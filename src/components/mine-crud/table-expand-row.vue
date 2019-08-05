@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    inject: ['dataSource', 'columns'],
+    inject: ['data', 'columns'],
     props: {
         row: Object,
         expandedColumns: {

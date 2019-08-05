@@ -10,6 +10,10 @@ module.exports = function({ config }) {
         enforce: 'post'
     });
     config.module.rules.push({
+      resourceQuery: /blockType=docs/,
+      use: ['storybook-readme/vue/docs-loader', 'html-loader', 'markdown-loader'],
+    });
+    config.module.rules.push({
         test: /\.less$/,
         oneOf: [
             /* config.module.rule('less').oneOf('vue-modules') */

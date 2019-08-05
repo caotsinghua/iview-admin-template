@@ -14,7 +14,7 @@
             </Col>
         </Row>
         <Table
-            :data="dataSource"
+            :data="data"
             :columns="columns"
             :loading="loading"
             v-bind="this.$attrs"
@@ -52,7 +52,7 @@ export default {
     },
     props: {
         // ===============table props
-        dataSource: {
+        data: {
             type: Array,
             default: () => []
         },
@@ -129,8 +129,7 @@ export default {
         // 是否分页，有则必须配置pageConfig
         pageConfig: {
             // 配置分页信息
-            type: Object,
-            default: () => ({})
+            type: Object
         },
         // 增加/编辑/删除,当提交请求时的处理函数，edit/delete传入当前row信息
         onCreateForm: Function,
@@ -152,7 +151,7 @@ export default {
             formData: this.formData,
             rules: this.rules,
             formColumns: this.formColumns,
-            dataSource: this.dataSource,
+            data: this.data,
             columns: this.columns
         };
     },
@@ -168,7 +167,8 @@ export default {
             if (!columns.find(item => item.slot === 'row-actions')) {
                 columns.push({
                     title: '操作',
-                    slot: 'row-actions'
+                    slot: 'row-actions',
+                    align: 'center'
                 });
             }
             if (this.hasBatchDelBtn && !columns.find(item => item.type === 'selection')) {
