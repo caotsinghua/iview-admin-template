@@ -1,3 +1,7 @@
+/**
+ * 构建时的一些配置
+ * 根据process.env.BUILD_ENV来决定
+ */
 const env = process.env.BUILD_ENV;
 const config = {
     development: {
