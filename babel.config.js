@@ -1,5 +1,3 @@
-module.exports = api => {
-    return {
-        presets: ['@vue/app']
-    };
+module.exports = {
+    presets: ['@vue/app']
 };

@@ -5,8 +5,8 @@
     "scripts": {
         "dev": "cross-env BUILD_ENV=development vue-cli-service serve --open",
         "build": "vue-cli-service build",
-        "build:test":"cross-env BUILD_ENV=test npm run build",
-        "build:prod":"cross-env BUILD_ENV=production npm run build",
+        "build:test": "cross-env BUILD_ENV=test npm run build",
+        "build:prod": "cross-env BUILD_ENV=production npm run build",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "test:e2e": "vue-cli-service test:e2e",
@@ -49,6 +49,7 @@
         "babel-jest": "^23.6.0",
         "babel-loader": "^8.0.6",
         "babel-preset-vue": "^2.0.2",
+        "cross-env": "^5.2.0",
         "eslint-config-prettier": "^6.0.0",
         "eslint-plugin-cypress": "^2.0.1",
         "eslint-plugin-prettier": "^3.1.0",
