@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>crud</h1>
-        <MineCrud
+        <crud
             :data="data"
             :columns="columns"
             :formColumns="formColumns"
@@ -11,8 +11,9 @@
             :onCreateForm="handleCreateForm"
             :onDeleteRow="handleDeleteRow"
             :pageConfig="pageConfig"
+            :rowActionsWidth="300"
             @on-change="handlePageChange"
-            :hasBatchDelBtn="false"
+            :hasBatchDelBtn="true"
         >
             <!-- 重写行操作 -->
             <!-- <template slot="rewrite-row-actions" slot-scope="{ row }">
@@ -20,26 +21,26 @@
             </template> -->
             <!-- 添加行操作 -->
             <template slot="append-row-actions" slot-scope="{ row }">
-                <span>添加span{{ row.name }}</span>
+                <span>添加rowAction{{ row.name }}</span>
             </template>
             <!-- 添加顶部左侧操作 -->
             <template slot="left-actions">
-                <button>left</button>
+                <span>append left</span>
             </template>
             <!-- 添加顶部右侧操作 -->
             <template slot="right-actions">
-                <button>right</button>
+                <span>append right</span>
             </template>
-        </MineCrud>
+        </crud>
     </div>
 </template>
 
 <script>
-import MineCrud from '../../components/mine-crud';
+import crud from '../../components/crud';
 export default {
     name: 'crud-table',
     components: {
-        MineCrud
+        crud
     },
     data() {
         const testValidator = (rule, value, callback) => {
@@ -68,12 +69,13 @@ export default {
                 }
             ],
             columns: [
-                {
-                    type: 'selection'
-                },
+                // {
+                //     type: 'selection',
+                //     width: 50
+                // },
                 {
                     type: 'expand', // 无需设置render函数，会自动注入 | 设置render函数则按照render函数来渲染
-                    width: 60,
+                    width: 50,
                     // expandedColumns: ['name', 'age', 'type'], // 展开的key，和名称,不填名称默认和表格的title一致
                     expandedColumns: [
                         'name',

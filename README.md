@@ -18,6 +18,8 @@ iView Admin
 ### 说明
 
 编写 crud 管理时，按照如下结构分层
+使得所有该资源下的组件都可以共享 store 数据，而不会影响到其他的页面。
+不同页面共享的数据应该在 vuex 的 store 里。
 
 ```
 - api
@@ -34,7 +36,7 @@ iView Admin
 
 ## mine-crud 组件
 
-[文档地址](https://jolly-shaw-eee7e6.netlify.com)
+[文档地址](https://elastic-darwin-d040c4.netlify.com)
 
 功能：
 
@@ -51,6 +53,5 @@ iView Admin
 
 -   表单
     -   [x] 修改数据，删除数据，添加数据（弹出框）
-    -   [o] 自定义弹出框内容（自定义行操作按钮，覆盖原操作）
+    -   [x] 自定义弹出框内容（自定义行操作按钮，覆盖原操作）
     -   [x] 表单上传文件 (formColumns 里的 type 为 file 或 image，将 Upload 组件的 props 写在 uploadConfig 中)
-

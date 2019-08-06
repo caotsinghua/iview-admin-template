@@ -13,6 +13,7 @@
 <script>
 import EditForm from './form';
 export default {
+    name: 'crud-form-modal',
     components: {
         EditForm
     },

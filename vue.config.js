@@ -36,6 +36,17 @@ module.exports = {
         //     args[0].captUrl = buildConfig.captUrl; // 验证码路径
         //     return args;
         // });
+        // 修改DefinePlugin
+        config.plugin('define').tap(args => {
+            return [
+                {
+                    'process.env': {
+                        ...args[0]['process.env'],
+                        BUILD_ENV: JSON.stringify(process.env.BUILD_ENV)
+                    }
+                }
+            ];
+        });
     },
     // 设为false打包时不生成.map文件
     productionSourceMap: false,

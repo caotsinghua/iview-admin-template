@@ -44,7 +44,7 @@ import EditModal from './modal';
 import { assignWithOutKeys, assignWithKeys } from './utils';
 
 export default {
-    name: 'mine-crud',
+    name: 'crud',
     inheritAttrs: false, // 不继承属性
     components: {
         CrudExpandRow,

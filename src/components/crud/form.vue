@@ -62,7 +62,7 @@
  * ]
  */
 export default {
-    name: 'mine-crud-form',
+    name: 'crud-form',
     inject: ['formData', 'onCreateForm', 'onUpdateForm', 'rules', 'formColumns'],
     props: ['loading'],
     data() {
