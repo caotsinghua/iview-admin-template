@@ -1,4 +1,5 @@
 import axios from 'axios';
+import iView from 'iview';
 // import store from '@/store';
 // import { Spin } from 'iview'
 
@@ -34,6 +35,14 @@ class HttpRequest {
                 return config;
             },
             error => {
+                if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+                    // console.log('根据你设置的timeout/真的请求超时 判断请求现在超时了，你可以在这里加入超时的处理方案')
+                    iView.Message.warning({
+                        content: '请求超时',
+                        duration: 10,
+                        closable: true
+                    });
+                }
                 return Promise.reject(error);
             }
         );
@@ -46,20 +55,62 @@ class HttpRequest {
             },
             error => {
                 this.destroy(url);
-                let errorInfo = error.response;
-                if (!errorInfo) {
-                    const {
-                        request: { statusText, status },
-                        config
-                    } = JSON.parse(JSON.stringify(error));
-                    errorInfo = {
-                        statusText,
-                        status,
-                        request: { responseURL: config.url }
-                    };
+                if (error && error.response) {
+                    switch (error.response.status) {
+                        case 400:
+                            error.message = '请求错误';
+                            break;
+
+                        case 401:
+                            error.message = '未授权，请登录';
+                            break;
+
+                        case 403:
+                            error.message = '拒绝访问';
+                            break;
+
+                        case 404:
+                            error.message = '请求地址出错';
+                            break;
+
+                        case 408:
+                            error.message = '请求超时';
+                            break;
+                        case 413:
+                            error.message = '上传文件过大！';
+                            break;
+                        case 500:
+                            error.message = '服务器内部错误';
+                            break;
+
+                        case 501:
+                            error.message = '服务未实现';
+                            break;
+
+                        case 502:
+                            error.message = '网关错误';
+                            break;
+
+                        case 503:
+                            error.message = '服务不可用';
+                            break;
+
+                        case 504:
+                            error.message = '网关超时';
+                            break;
+
+                        case 505:
+                            error.message = 'HTTP版本不受支持';
+                            break;
+
+                        default:
+                    }
                 }
-                // 错误处理
-                iView.Message.error(errorInfo.statusText);
+                iView.Message.warning({
+                    content: error.message || '服务出错了',
+                    duration: 1000,
+                    closable: true
+                });
                 return Promise.reject(error);
             }
         );
