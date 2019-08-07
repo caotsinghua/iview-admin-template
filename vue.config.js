@@ -1,5 +1,5 @@
 const path = require('path');
-// const buildConfig = require('./buildConfig');
+const buildConfig = require('./buildConfig');
 const resolve = dir => {
     return path.join(__dirname, dir);
 };
@@ -32,10 +32,10 @@ module.exports = {
             .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
             .set('_c', resolve('src/components'));
         // 修改html-webpack-plugin
-        // config.plugin('html').tap(args => {
-        //     args[0].captUrl = buildConfig.captUrl; // 验证码路径
-        //     return args;
-        // });
+        config.plugin('html').tap(args => {
+            args[0].captUrl = buildConfig.captUrl; // 验证码路径
+            return args;
+        });
         // 修改DefinePlugin
         config.plugin('define').tap(args => {
             return [

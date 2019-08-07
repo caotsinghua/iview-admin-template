@@ -3,6 +3,7 @@
  * 根据process.env.BUILD_ENV来决定
  */
 const env = process.env.BUILD_ENV;
+
 const config = {
     development: {
         captUrl: 'https://cfgpassportuat2.eastmoney.com/captcha/scripts/em_capt.js'

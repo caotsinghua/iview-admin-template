@@ -3,14 +3,14 @@
     "version": "2.0.0",
     "private": false,
     "scripts": {
-        "dev": "cross-env BUILD_ENV=development vue-cli-service serve --open",
+        "dev": "cross-env BUILD_ENV='development' vue-cli-service serve --open",
         "build": "vue-cli-service build",
         "build:test": "cross-env BUILD_ENV='test' vue-cli-service build --mode production",
         "build:prod": "cross-env BUILD_ENV='production' vue-cli-service build --mode production",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "test:e2e": "vue-cli-service test:e2e",
-        "inspect": "vue-cli-service inspect > webpack.js"
+        "inspect": "cross-env BUILD_ENV='development' vue-cli-service inspect > webpack.js"
     },
     "dependencies": {
         "axios": "^0.18.0",
