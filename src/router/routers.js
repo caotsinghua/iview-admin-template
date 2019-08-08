@@ -28,6 +28,15 @@ const homeRoute = {
     },
     component: () => import('@/view/home/home.vue')
 };
+const changeLogRoute = {
+    path: '/change-log',
+    name: 'change-log',
+    meta: {
+        title: '更新日志',
+        hideInMenu: true
+    },
+    component: () => import('@/view/change-log/change-log.vue')
+};
 const appRoutes = [
     {
         path: '/articles',
@@ -91,7 +100,7 @@ export default [
             hideInMenu: true,
             notCache: true
         },
-        children: [homeRoute]
+        children: [homeRoute, changeLogRoute]
     },
     ...appRoutes,
     {

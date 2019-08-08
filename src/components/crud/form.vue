@@ -9,9 +9,10 @@
                         v-model="formData[col.prop]"
                         :placeholder="`请输入${col.label}...`"
                         :disabled="loading"
+                        :readonly="readOnly"
                     />
-                    <Select v-if="col.type === 'select'" v-model="formData[col.prop]" clearable :disabled="loading">
-                        <Option v-for="item in col.dicts" :value="item.value" :key="item.value">{{
+                    <Select v-if="col.type === 'select'" v-model="formData[col.prop]" :disabled="loading">
+                        <Option v-for="item in col.dicts" :value="item.value" :key="item.value" :disabled="readOnly">{{
                             item.label
                         }}</Option>
                     </Select>
@@ -22,8 +23,13 @@
                         :format="col.format || ''"
                         :placeholder="`请选择${col.label}`"
                         :disabled="loading"
+                        :readonly="readOnly"
                     ></DatePicker>
-                    <Upload v-if="col.type === 'file' || col.type === 'image'" v-bind="col.uploadConfig">
+                    <Upload
+                        v-if="col.type === 'file' || col.type === 'image'"
+                        v-bind="col.uploadConfig"
+                        :disabled="loading || readOnly"
+                    >
                         <div class="inner-upload">
                             <img
                                 v-if="col.type === 'image' && !!formData[col.prop]"
@@ -40,6 +46,7 @@
                 </FormItem>
             </Col>
         </Row>
+        <slot v-bind:formData="{ formData }"> </slot>
     </Form>
 </template>
 
@@ -64,7 +71,16 @@
 export default {
     name: 'crud-form',
     inject: ['formData', 'onCreateForm', 'onUpdateForm', 'rules', 'formColumns'],
-    props: ['loading'],
+    props: {
+        loading: {
+            type: Boolean,
+            default: false
+        },
+        readOnly: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             colNum: 2, // 每行几个formitem
@@ -131,6 +147,9 @@ export default {
             const otherTypes = ['select', 'date', 'datetime', 'file', 'image'];
             const hasType = otherTypes.find(item => item === type);
             return !hasType;
+        },
+        sync(prop, value) {
+            this.formData[prop] = value;
         }
     }
 };

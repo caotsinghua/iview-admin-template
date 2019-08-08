@@ -31,6 +31,14 @@ module.exports = {
         config.resolve.alias
             .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
             .set('_c', resolve('src/components'));
+        config.module
+            .rule('md')
+            .test(/\.md/)
+            .use('html-loader')
+            .loader('html-loader')
+            .end()
+            .use('markdown-loader')
+            .loader('markdown-loader');
         // 修改html-webpack-plugin
         config.plugin('html').tap(args => {
             args[0].captUrl = buildConfig.captUrl; // 验证码路径

@@ -9,6 +9,7 @@
                 <!-- <DropdownItem name="message">
           消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
         </DropdownItem> -->
+                <DropdownItem name="change-log">更新日志</DropdownItem>
                 <DropdownItem name="logout">退出登录</DropdownItem>
             </DropdownMenu>
         </Dropdown>
@@ -48,6 +49,9 @@ export default {
             switch (name) {
                 case 'logout':
                     this.logout();
+                    break;
+                case 'change-log':
+                    this.$router.push({ name: 'change-log' });
                     break;
             }
         }

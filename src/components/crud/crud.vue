@@ -24,7 +24,8 @@
             <template slot="row-actions" slot-scope="{ row }">
                 <div class="row-actions">
                     <slot name="rewrite-row-actions" v-bind:row="row">
-                        <Button v-if="hasRowEditBtn" type="primary" size="small" @click="handleEdit(row)">编辑</Button>
+                        <Button v-if="hasRowInfoBtn" type="primary" size="small" @click="handleInfo(row)">详情</Button>
+                        <Button v-if="hasRowEditBtn" type="warning" size="small" @click="handleEdit(row)">编辑</Button>
                         <Button v-if="hasRowDelBtn" type="error" size="small" @click="handleDelete(row)">删除</Button>
                     </slot>
                     <slot name="append-row-actions" v-bind:row="row"></slot>
@@ -34,7 +35,9 @@
         <Row type="flex" justify="end" style="margin:15px 0;" v-if="pageConfig">
             <Page v-bind="pageConfig" v-on="pageListeners" />
         </Row>
-        <EditModal ref="edit-modal" />
+        <EditModal ref="edit-modal">
+            <slot name="form-items" v-bind:formData="formData"></slot>
+        </EditModal>
     </div>
 </template>
 
@@ -47,7 +50,6 @@ export default {
     name: 'crud',
     inheritAttrs: false, // 不继承属性
     components: {
-        CrudExpandRow,
         EditModal
     },
     props: {
@@ -95,6 +97,10 @@ export default {
         rules: {
             type: Object,
             default: () => ({})
+        },
+        hasRowInfoBtn: {
+            type: Boolean,
+            default: true
         },
         hasRowDelBtn: {
             // 是否具有行内删除按钮
@@ -198,6 +204,9 @@ export default {
                 });
             }
             this.parsedColumns = columns;
+        },
+        handleInfo(row) {
+            this.$refs['edit-modal'].openModal(row, true); // 第二个参数为是否只读
         },
         handleEdit(row) {
             this.$refs['edit-modal'].openModal(row);
