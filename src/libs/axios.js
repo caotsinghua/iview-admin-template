@@ -11,6 +11,7 @@ class HttpRequest {
     getInsideConfig() {
         const config = {
             baseURL: this.baseUrl,
+            timeout: 30000,
             headers: {
                 //
             }
@@ -35,14 +36,6 @@ class HttpRequest {
                 return config;
             },
             error => {
-                if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-                    // console.log('根据你设置的timeout/真的请求超时 判断请求现在超时了，你可以在这里加入超时的处理方案')
-                    iView.Message.warning({
-                        content: '请求超时',
-                        duration: 10,
-                        closable: true
-                    });
-                }
                 return Promise.reject(error);
             }
         );
@@ -55,6 +48,14 @@ class HttpRequest {
             },
             error => {
                 this.destroy(url);
+                if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+                    // console.log('根据你设置的timeout/真的请求超时 判断请求现在超时了，你可以在这里加入超时的处理方案')
+                    iView.Message.warning({
+                        content: '请求超时',
+                        duration: 10,
+                        closable: true
+                    });
+                }
                 if (error && error.response) {
                     switch (error.response.status) {
                         case 400:
