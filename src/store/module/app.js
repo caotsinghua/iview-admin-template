@@ -11,7 +11,7 @@ import {
     localSave,
     localRead
 } from '@/libs/util';
-import router from '@/router';
+import { appContainer } from '@/libs/common-utils';
 import routers from '@/router/routers';
 import config from '@/config';
 const { homeName } = config;
@@ -21,7 +21,7 @@ const closePage = (state, route) => {
     state.tagNavList = state.tagNavList.filter(item => {
         return !routeEqual(item, route);
     });
-    router.push(nextRoute);
+    appContainer.router.push(nextRoute);
 };
 
 export default {
