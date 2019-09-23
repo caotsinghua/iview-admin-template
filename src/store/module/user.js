@@ -58,7 +58,7 @@ const actions = {
         const { router, vm } = appContainer;
         const { data } = await logout();
         commit('setHasLogged', false);
-        commit('setHasGetPrivs', false);
+        commit('setHasGetInfo', false);
         commit('setUserInfo', {});
         commit('setAccess', []);
         if (router) {

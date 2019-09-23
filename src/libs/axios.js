@@ -44,6 +44,18 @@ class HttpRequest {
             res => {
                 this.destroy(url);
                 const { data, status } = res;
+                if (!data.success) {
+                    if (data.code !== '10000') {
+                        iView.Message.error(data.message || `错误.code:${data.code}`);
+                    }
+                }
+                if (data.code === '10000') {
+                    // 是否是获取用户信息/状态的接口
+                    const isGetInfo = ~res.config.url.indexOf('user/curUser');
+                    if (!isGetInfo) {
+                        store.dispatch('handleLogOut');
+                    }
+                }
                 return { data, status };
             },
             error => {
