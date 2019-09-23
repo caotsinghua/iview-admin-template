@@ -38,6 +38,15 @@ const actions = {
     async handleLogin({ commit }, loginData) {
         const { data } = await login(loginData);
         if (data.success) {
+            /**
+             * @description 登陆时是否清空顶部tagList
+             */
+            // const tagNavList = rootState.app.tagNavList;
+            // const tagList = [];
+            // if (tagNavList[0] && tagNavList[0].name === config.homeName) {
+            //     tagList.push(tagNavList[0]);
+            // }
+            // commit('setTagNavList', tagList);
             const logged = await dispatch('getUserStatus');
             return logged;
         }
@@ -52,15 +61,6 @@ const actions = {
         commit('setHasGetPrivs', false);
         commit('setUserInfo', {});
         commit('setAccess', []);
-        /**
-         * @description 退出登陆时是否清空顶部tagList
-         */
-        // const tagNavList = rootState.app.tagNavList;
-        // const tagList = [];
-        // if (tagNavList[0] && tagNavList[0].name === config.homeName) {
-        //     tagList.push(tagNavList[0]);
-        // }
-        // commit('setTagNavList', tagList);
         if (router) {
             router.replace({
                 name: 'login'

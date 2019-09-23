@@ -33,25 +33,3 @@ iView Admin
 ```
 
 在 view/articles 中为示例，可 copy 后加以修改。
-
-## mine-crud 组件
-
-[文档地址](https://elastic-darwin-d040c4.netlify.com)
-
-功能：
-
--   表格
-
-    -   [x] 根据 columns 渲染列表，获取 data
-    -   [x] 分页（与 iview-page 一致）
-    -   [x] 定义详情显示字段（通过 expand）
-    -   [x] 多选，批量删除或其他批量操作
-        -   :hasBatchDelBtn 只控制多选按钮和删除按钮的显示，具体逻辑自行实现
-        -   自己写@on-selection-change 逻辑，
-        -   批量删除按钮需要传入:onBatchDelete,无参数，自己处理多选的数据集
-    -   [x] 导出 csv -hasExportCsvBtn=true 需要时自定义 exportCsvConfig
-
--   表单
-    -   [x] 修改数据，删除数据，添加数据（弹出框）
-    -   [x] 自定义弹出框内容（自定义行操作按钮，覆盖原操作）
-    -   [x] 表单上传文件 (formColumns 里的 type 为 file 或 image，将 Upload 组件的 props 写在 uploadConfig 中)
