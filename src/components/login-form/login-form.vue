@@ -68,7 +68,7 @@ export default {
         this.getAppId();
         timer = setInterval(() => {
             this.getAppId();
-        }, 1000 * 20);
+        }, 1000 * 60 * 5);
     },
     methods: {
         handleSubmit() {
