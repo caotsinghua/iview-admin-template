@@ -25,14 +25,14 @@ export default {
         ...mapActions(['handleLogin', 'getUserInfo']),
         async handleSubmit({ userName, password }) {
             try {
-                await this.handleLogin({ userName, password });
-                await this.getUserInfo();
-                const { query } = this.$route;
-                this.$router.push({
-                    name: query.redirectName || this.$config.homeName
-                });
+                const logged = await this.handleLogin({ userName, password });
+                if (logged) {
+                    this.$router.push({
+                        name: this.$config.homeName
+                    });
+                }
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         }
     }

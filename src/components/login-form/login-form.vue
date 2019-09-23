@@ -14,12 +14,18 @@
                 </span>
             </Input>
         </FormItem>
+        <input type="hidden" id="contextId" />
+        <input type="hidden" id="accountIdHide" value="admin" />
+        <div id="containerId" style="border:1px solid #d7dde4;width:100%;height:46px;margin-bottom:10px;"></div>
         <FormItem>
             <Button @click="handleSubmit" type="primary" long>登录</Button>
         </FormItem>
     </Form>
 </template>
 <script>
+import axios from '@/libs/api.request';
+let capt = null;
+let timer = null;
 export default {
     name: 'LoginForm',
     props: {
@@ -41,7 +47,13 @@ export default {
             form: {
                 userName: 'super_admin',
                 password: ''
-            }
+            },
+            captchaConsolidateReq: {
+                Account: 'admin',
+                ContextId: '',
+                ValidateResult: ''
+            },
+            contextId: null
         };
     },
     computed: {
@@ -52,16 +64,83 @@ export default {
             };
         }
     },
+    mounted() {
+        this.getAppId();
+        timer = setInterval(() => {
+            this.getAppId();
+        }, 1000 * 20);
+    },
     methods: {
         handleSubmit() {
-            this.$refs.loginForm.validate(valid => {
+            this.captchaConsolidateReq.ContextId = capt && capt.getValidate().contextId;
+            this.captchaConsolidateReq.ValidateResult = capt && capt.getValidate().validate;
+
+            if (!this.captchaConsolidateReq.ContextId || !this.captchaConsolidateReq.ValidateResult) {
+                console.log(this.captchaConsolidateReq);
+                this.$Message.warning({
+                    content: '请输入合法验证码',
+                    duration: 5,
+                    closable: true
+                });
+                return;
+            }
+            this.$refs.loginForm.validate(async valid => {
                 if (valid) {
-                    this.$emit('on-success-valid', {
+                    await this.$emit('on-success-valid', {
                         userName: this.form.userName,
-                        password: this.form.password
+                        password: this.form.password,
+                        captchaConsolidateReq: this.captchaConsolidateReq
                     });
+                    // 登陆成功清除定时器
+                    clearInterval(timer);
                 }
             });
+        },
+        getAppId() {
+            axios
+                .request({
+                    url: '/sys/gencontext',
+                    method: 'post',
+                    data: { AppId: '201901231134', Scope: 'ICM' }
+                })
+                .then(
+                    res => {
+                        if (res.data.success === true) {
+                            this.contextId = res.data.data;
+                            if (this.contextId != null) {
+                                this.reset();
+                            }
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
+        },
+        // 后台二次认证后重置验证码
+        reset() {
+            // eslint-disable-next-line
+            if (this.contextId != '') {
+                capt = new EMCaptcha({
+                    containerId: 'containerId',
+                    appid: '201901231134',
+                    captchaContextId: this.contextId,
+                    product: 'float'
+                })
+                    .onSuccess(function() {
+                        // console.log('成功');
+                    })
+                    .onError(function() {
+                        // console.log('失败');
+                    });
+                const accountId = 'accountIdHide'; // 账户input控件
+                // const passwordId = 'passwordId'; // 密码input控件
+                // const account = !!accountId ? $('#' + accountId).val() : '';
+                const account = document.getElementById(accountId).value || '';
+                // const pwd = !!passwordId ? this.form.password : "";
+                const pwd = '111111';
+                capt.refresh(account, pwd);
+            }
         }
     }
 };
