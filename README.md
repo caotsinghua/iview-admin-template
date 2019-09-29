@@ -142,8 +142,7 @@ iView Admin
 </header-bar>
 ```
 
-修改 src/components/main/components/env
-和 store/app 中的 env 决定参数名是什么
+修改 src/components/main/components/env和 store/app 中的 env值 决定参数名是什么
 
 ### appContainer
 
@@ -173,6 +172,12 @@ iView Admin
     ```
 
     需要根据实际 api 修改 isGetInfo 的判断逻辑
+
+### mock
+
+目前 mock 了 login,logout,getUserStatus ,在 mock/login 文件夹中
+
+_可以修改 getUserStatus 的 success,code 属性来切换登陆态_
 
 ### 其他
 
