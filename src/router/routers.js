@@ -1,5 +1,6 @@
 import Main from '@/components/main';
 import config from '../config';
+import appRoutes from './modules/app';
 // import parentView from '@/components/parent-view';
 
 /**
@@ -37,31 +38,8 @@ const changeLogRoute = {
     },
     component: () => import('@/view/change-log/change-log.vue')
 };
-const appRoutes = [
-    {
-        path: '/todos',
-        name: 'todos',
-        redirect: '/todos/list',
-        meta: {
-            title: 'todos',
-            icon: 'md-albums',
-            showAlways: true
-        },
-        component: Main,
-        children: [
-            {
-                path: '/todos/list',
-                name: 'todos-list',
-                meta: {
-                    title: 'todos',
-                    icon: 'md-albums'
-                },
-                component: () => import('@/view/todos/index.vue')
-            }
-        ]
-    }
-];
-export default [
+// 无需权限管理的路由
+const staticRoutes = [
     {
         path: '/login',
         name: 'login',
@@ -82,7 +60,6 @@ export default [
         },
         children: [homeRoute, changeLogRoute]
     },
-    ...appRoutes,
     {
         path: '/401',
         name: 'error_401',
@@ -98,7 +75,13 @@ export default [
             hideInMenu: true
         },
         component: () => import('@/view/error-page/500.vue')
-    },
+    }
+];
+
+export default [
+    ...staticRoutes,
+    ...appRoutes,
+    // 404必须放在最后
     {
         path: '*',
         name: 'error_404',
