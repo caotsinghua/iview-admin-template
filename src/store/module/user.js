@@ -1,6 +1,7 @@
 import { login, logout, getUserStatus } from '@/api/user';
 import { setToken, getToken } from '@/libs/util';
-import config from '@/config';
+import { appContainer } from '@/libs/common-utils';
+// import config from '@/config';
 const state = {
     userInfo: {},
     token: getToken(),
@@ -35,18 +36,10 @@ const mutations = {
 };
 const actions = {
     // 登录
-    async handleLogin({ commit }, loginData) {
+    async handleLogin({ commit, dispatch }, loginData) {
         const { data } = await login(loginData);
         if (data.success) {
-            /**
-             * @description 登陆时是否清空顶部tagList
-             */
-            // const tagNavList = rootState.app.tagNavList;
-            // const tagList = [];
-            // if (tagNavList[0] && tagNavList[0].name === config.homeName) {
-            //     tagList.push(tagNavList[0]);
-            // }
-            // commit('setTagNavList', tagList);
+            // 登陆成功后获取用户信息
             const logged = await dispatch('getUserStatus');
             return logged;
         }
@@ -55,7 +48,7 @@ const actions = {
 
     // 退出登录
     async handleLogOut({ state, commit, rootState }) {
-        const { router, vm } = appContainer;
+        const { router } = appContainer;
         const { data } = await logout();
         commit('setHasLogged', false);
         commit('setHasGetInfo', false);
@@ -65,13 +58,6 @@ const actions = {
             router.replace({
                 name: 'login'
             });
-            /**
-             * @description 需要退出登陆重置app时使用
-             */
-            // vm.$nextTick(() => {
-            //     appContainer.isRebuild = true;
-            //     initApp();
-            // });
         }
         return data;
     },

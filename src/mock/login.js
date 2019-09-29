@@ -18,7 +18,10 @@ const USER_MAP = {
 
 export const login = req => {
     req = JSON.parse(req.body);
-    return { token: USER_MAP[req.userName || 'super_admin'].token };
+    return {
+        token: USER_MAP[req.userName || 'super_admin'].token,
+        success: true
+    };
 };
 
 export const getUserInfo = () => {
@@ -29,12 +32,16 @@ export const getUserInfo = () => {
 };
 
 export const logout = () => {
-    return null;
+    return {
+        success: true
+    };
 };
 
 export const getUserStatus = () => {
     return {
         success: true,
+        code: '10000',
+        message: '未登录',
         data: USER_MAP['super_admin']
     };
 };

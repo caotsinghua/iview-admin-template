@@ -22,7 +22,7 @@ export default {
         LoginForm
     },
     methods: {
-        ...mapActions(['handleLogin', 'getUserInfo']),
+        ...mapActions(['handleLogin']),
         async handleSubmit({ userName, password }) {
             try {
                 const logged = await this.handleLogin({ userName, password });

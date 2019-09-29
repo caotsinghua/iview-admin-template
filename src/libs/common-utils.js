@@ -1,6 +1,5 @@
 import iView from 'iview';
 import Vue from 'vue';
-import i18n from '@/locale';
 import App from '@/App';
 import createRouter from '@/router';
 import store from '@/store';
@@ -8,8 +7,7 @@ import { getToken } from './util';
 
 export const appContainer = {
     router: null,
-    vm: null,
-    isRebuild: false
+    vm: null
 };
 function initApp() {
     const router = createRouter();
@@ -17,7 +15,6 @@ function initApp() {
     appContainer.vm = new Vue({
         el: '#app',
         router,
-        i18n,
         store,
         render: h => h(App)
     });
@@ -49,7 +46,7 @@ export const initAppByStatus = async () => {
 // 通过token判断登陆态
 export const initAppByToken = async () => {
     const hasLogged = !!getToken();
-    await store.dispatch('getUserStatus', hasLogged);
+    await store.dispatch('getUserStatus', hasLogged); // 传入第二个登陆态参数则不会调用接口
     initApp();
 };
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="container articles-table">
+    <div class="container todo-table">
         <div class="header-search-wrap">
             <HeaderSearch></HeaderSearch>
         </div>
@@ -8,30 +8,30 @@
             <Button type="error" icon="md-trash" @click="handleBatchDelete" :disabled="selected.length === 0"
                 >批量删除</Button
             >
-            <Button type="primary" icon="md-out" @click="handleExportExcel">导出excel</Button>
         </div>
         <main>
             <Table
                 border
-                :data="articlesState.data"
+                :data="storeState.data"
                 :columns="columns"
-                :loading="articlesState.loading"
+                :loading="storeState.loading"
                 :max-height="540"
                 @on-selection-change="handleSelectionChange"
             >
                 <template slot="actions" slot-scope="{ row }">
                     <div class="row-actions">
-                        <Button type="primary" @click="handleEditRow(row)">编辑</Button>
-                        <Button type="error" @click="handleDeleteRow(row)">删除</Button>
+                        <Button size="small" type="primary" @click="handleShowRow(row)">查看</Button>
+                        <Button size="small" type="primary" @click="handleEditRow(row)">编辑</Button>
+                        <Button size="small" type="error" @click="handleDeleteRow(row)">删除</Button>
                     </div>
                 </template>
             </Table>
             <Row type="flex" justify="end" style="margin-top:15px">
                 <Col>
                     <Page
-                        :current="articlesState.page"
-                        :total="articlesState.total"
-                        :page-size="articlesState.pageSize"
+                        :current="storeState.page"
+                        :total="storeState.total"
+                        :page-size="storeState.pageSize"
                         show-sizer
                         show-total
                         @on-change="handlePageChange"
@@ -45,28 +45,19 @@
 
 <script>
 import HeaderSearch from './components/header-search';
-import TableExpandRow from './components/table-expand-row';
 import EditModal from './components/edit-modal';
-import articlesStore from './store';
+import store from './store';
+
 export default {
-    name: 'articles-table',
+    name: 'todo-table',
     components: {
         HeaderSearch,
-        TableExpandRow,
         EditModal
     },
     data() {
         return {
-            articlesState: articlesStore.state,
+            storeState: store.state,
             columns: [
-                {
-                    type: 'expand',
-                    width: 50,
-                    render: (h, { row }) =>
-                        h(TableExpandRow, {
-                            props: { row }
-                        })
-                },
                 {
                     type: 'selection',
                     width: 60,
@@ -97,25 +88,6 @@ export default {
                     align: 'center'
                 },
                 {
-                    title: '阅读量',
-                    key: 'readed',
-                    align: 'center'
-                },
-                {
-                    title: '发布时间',
-                    key: 'publishTime',
-                    align: 'center',
-                    ellipsis: true,
-                    tooltip: true
-                },
-                {
-                    title: '更新时间',
-                    key: 'updateTime',
-                    align: 'center',
-                    ellipsis: true,
-                    tooltip: true
-                },
-                {
                     title: '操作',
                     slot: 'actions',
                     align: 'center',
@@ -130,13 +102,16 @@ export default {
     },
     methods: {
         initData() {
-            articlesStore.getData({});
+            store.getData();
         },
         handleEditRow(row) {
-            this.$refs['edit-modal'].openModal(row.id);
+            this.$refs['edit-modal'].show(row);
         },
         handleAddRow() {
-            this.$refs['edit-modal'].openModal();
+            this.$refs['edit-modal'].show();
+        },
+        handleShowRow(row) {
+            this.$refs['edit-modal'].show(row, true);
         },
         handleDeleteRow(row) {
             this.$Modal.confirm({
@@ -163,18 +138,20 @@ export default {
                 }
             });
         },
-        handleExportExcel() {},
-        handlePageChange(page) {},
-        handlePageSizeChange(pageSize) {}
+        handlePageChange(page) {
+            if (page === this.storeState.page) return;
+            store.getData({ page });
+        },
+        handlePageSizeChange(pageSize) {
+            store.getData({ page: 1, pageSize });
+        }
     }
 };
 </script>
 
 <style lang="less" scoped>
-.article-table {
-}
 .header-search-wrap {
-    margin-top: 10px;
+    margin: 10px 0 20px;
 }
 .header-actions {
     margin: 15px 0;

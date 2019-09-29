@@ -1,6 +1,6 @@
 import axios from 'axios';
 import iView from 'iview';
-// import store from '@/store';
+import store from '@/store';
 // import { Spin } from 'iview'
 
 class HttpRequest {
@@ -44,14 +44,13 @@ class HttpRequest {
             res => {
                 this.destroy(url);
                 const { data, status } = res;
-                if (!data.success) {
-                    if (data.code !== '10000') {
-                        iView.Message.error(data.message || `错误.code:${data.code}`);
-                    }
+                if (!data.success && data.code !== '10000') {
+                    iView.Message.error(data.message || `错误.code:${data.code}`);
                 }
                 if (data.code === '10000') {
                     // 是否是获取用户信息/状态的接口
-                    const isGetInfo = ~res.config.url.indexOf('user/curUser');
+                    // TODO：如果获取用户状态接口无登陆验证则不需该校验
+                    const isGetInfo = ~res.config.url.indexOf('user/status');
                     if (!isGetInfo) {
                         store.dispatch('handleLogOut');
                     }

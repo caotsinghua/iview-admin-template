@@ -14,9 +14,11 @@
                 </span>
             </Input>
         </FormItem>
+        <!-- 验证码相关 -->
         <input type="hidden" id="contextId" />
         <input type="hidden" id="accountIdHide" value="admin" />
         <div id="containerId" style="border:1px solid #d7dde4;width:100%;height:46px;margin-bottom:10px;"></div>
+        <!-- end -->
         <FormItem>
             <Button @click="handleSubmit" type="primary" long>登录</Button>
         </FormItem>
@@ -74,16 +76,16 @@ export default {
         handleSubmit() {
             this.captchaConsolidateReq.ContextId = capt && capt.getValidate().contextId;
             this.captchaConsolidateReq.ValidateResult = capt && capt.getValidate().validate;
-
-            if (!this.captchaConsolidateReq.ContextId || !this.captchaConsolidateReq.ValidateResult) {
-                console.log(this.captchaConsolidateReq);
-                this.$Message.warning({
-                    content: '请输入合法验证码',
-                    duration: 5,
-                    closable: true
-                });
-                return;
-            }
+            // TODO:启用验证码时开启必选
+            // if (!this.captchaConsolidateReq.ContextId || !this.captchaConsolidateReq.ValidateResult) {
+            //     console.log(this.captchaConsolidateReq);
+            //     this.$Message.warning({
+            //         content: '请输入合法验证码',
+            //         duration: 5,
+            //         closable: true
+            //     });
+            //     return;
+            // }
             this.$refs.loginForm.validate(async valid => {
                 if (valid) {
                     await this.$emit('on-success-valid', {

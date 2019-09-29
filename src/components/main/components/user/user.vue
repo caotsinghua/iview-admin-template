@@ -2,13 +2,12 @@
     <div class="user-avatar-dropdown">
         <Dropdown @on-click="handleClick">
             <Badge :dot="!!messageUnreadCount">
-                <Avatar :src="userAvatar" />
+                <Avatar style="background-color: #87d068" :title="userInfo.userName">
+                    {{ userInfo.userName && userInfo.userName[0] }}</Avatar
+                >
             </Badge>
             <Icon :size="18" type="md-arrow-dropdown"></Icon>
             <DropdownMenu slot="list">
-                <!-- <DropdownItem name="message">
-          消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
-        </DropdownItem> -->
                 <DropdownItem name="change-log">更新日志</DropdownItem>
                 <DropdownItem name="logout">退出登录</DropdownItem>
             </DropdownMenu>
@@ -31,6 +30,11 @@ export default {
             default: 0
         }
     },
+    computed: {
+        userInfo() {
+            return this.$store.state.user.userInfo;
+        }
+    },
     methods: {
         ...mapActions(['handleLogOut']),
         logout() {
@@ -40,11 +44,6 @@ export default {
                 });
             });
         },
-        // message () {
-        //   this.$router.push({
-        //     name: 'message_page'
-        //   })
-        // },
         handleClick(name) {
             switch (name) {
                 case 'logout':

@@ -11,6 +11,7 @@ import {
     localSave,
     localRead
 } from '@/libs/util';
+import { getEnv } from '@/api/system';
 import { appContainer } from '@/libs/common-utils';
 import routers from '@/router/routers';
 import config from '@/config';
@@ -29,7 +30,8 @@ export default {
         breadCrumbList: [],
         tagNavList: [],
         homeRoute: {},
-        local: localRead('local')
+        local: localRead('local'),
+        env: '' // 系统部署环境
     },
     getters: {
         menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access)
@@ -76,7 +78,17 @@ export default {
         setLocal(state, lang) {
             localSave('local', lang);
             state.local = lang;
+        },
+        setEnv(state, env) {
+            state.env = env;
         }
     },
-    actions: {}
+    actions: {
+        async getEnv({ commit }) {
+            const { data } = await getEnv();
+            if (data.success && data.data) {
+                commit('setEnv', data.data.env);
+            }
+        }
+    }
 };

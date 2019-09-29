@@ -2,6 +2,8 @@ import Mock from 'mockjs';
 
 export function getArticles() {
     return Mock.mock({
+        success: true,
+        // code: '10000',
         'data|15-40': [
             {
                 id: '@increment',
@@ -13,4 +15,13 @@ export function getArticles() {
             }
         ]
     });
+}
+
+export function getEnv() {
+    return {
+        success: true,
+        data: {
+            env: 'dev'
+        }
+    };
 }

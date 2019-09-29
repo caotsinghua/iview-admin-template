@@ -2,12 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import iView from 'iview';
-import i18n from '@/locale';
 import config from '@/config';
 import importDirective from '@/directive';
 import { directive as clickOutside } from 'v-click-outside-x';
 import installPlugin from '@/plugin';
-import { initAppByStatus, appContainer, disableLog, logBuildInfo } from './libs/common-utils';
+import { initAppByStatus, disableLog, logBuildInfo } from './libs/common-utils';
+import store from './store';
 import './index.less';
 import '@/assets/icons/iconfont.css';
 
@@ -15,9 +15,7 @@ import '@/assets/icons/iconfont.css';
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production') require('@/mock');
 
-Vue.use(iView, {
-    i18n: (key, value) => i18n.t(key, value)
-});
+Vue.use(iView);
 /**
  * @description 注册admin内置插件
  */
@@ -36,10 +34,7 @@ Vue.prototype.$config = config;
 importDirective(Vue);
 Vue.directive('clickOutside', clickOutside);
 
-/**
- * 初始化app
- */
-window.appContainer = appContainer;
+store.dispatch('getEnv');
 initAppByStatus();
 
 /**

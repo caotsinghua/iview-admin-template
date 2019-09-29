@@ -39,23 +39,24 @@ const changeLogRoute = {
 };
 const appRoutes = [
     {
-        path: '/articles',
-        name: 'articles',
-        redirect: '/articles/table',
+        path: '/todos',
+        name: 'todos',
+        redirect: '/todos/list',
         meta: {
-            title: 'articles',
-            icon: 'md-albums'
+            title: 'todos',
+            icon: 'md-albums',
+            showAlways: true
         },
         component: Main,
         children: [
             {
-                path: '/articles/table',
-                name: 'articles-table',
+                path: '/todos/list',
+                name: 'todos-list',
                 meta: {
-                    title: 'articles',
+                    title: 'todos',
                     icon: 'md-albums'
                 },
-                component: () => import('@/view/articles/articles-table.vue')
+                component: () => import('@/view/todos/index.vue')
             }
         ]
     }

@@ -30,8 +30,9 @@
         <Layout>
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-                    <user :message-unread-count="unreadCount" :user-avatar="userAvatar" />
-                    <fullscreen v-model="isFullscreen" style="margin-right: 10px;" />
+                    <user />
+                    <Env />
+                    <!-- <fullscreen v-model="isFullscreen" style="margin-right: 10px;" /> -->
                 </header-bar>
             </Header>
             <Content class="main-content-con">
@@ -59,6 +60,7 @@ import ABackTop from './components/a-back-top';
 import Fullscreen from './components/fullscreen';
 import Language from './components/language';
 import ErrorStore from './components/error-store';
+import Env from './components/env';
 import { mapMutations, mapActions } from 'vuex';
 import { getNewTagList, routeEqual } from '@/libs/util';
 import routers from '@/router/routers';
@@ -74,7 +76,8 @@ export default {
         Fullscreen,
         ErrorStore,
         User,
-        ABackTop
+        ABackTop,
+        Env
     },
     data() {
         return {
@@ -178,8 +181,8 @@ export default {
             route: { name, params, query, meta }
         });
         this.setBreadCrumb(this.$route);
-        // 设置初始语言
-        this.setLocal(this.$i18n.locale);
+        // // 设置初始语言
+        // this.setLocal(this.$i18n.locale);
         // 如果当前打开页面不在标签栏中，跳到homeName页
         if (!this.tagNavList.find(item => item.name === this.$route.name)) {
             this.$router.push({
