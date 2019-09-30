@@ -8,6 +8,7 @@ import { directive as clickOutside } from 'v-click-outside-x';
 import installPlugin from '@/plugin';
 import { initAppByStatus, disableLog, logBuildInfo } from './libs/common-utils';
 import store from './store';
+import modal from '@/components/modal';
 import './index.less';
 import '@/assets/icons/iconfont.css';
 
@@ -28,6 +29,7 @@ Vue.config.productionTip = false;
  * @description 全局注册应用配置
  */
 Vue.prototype.$config = config;
+Vue.prototype.$modal = modal;
 /**
  * 注册指令
  */
