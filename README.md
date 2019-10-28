@@ -23,7 +23,7 @@ iView Admin
 
 编写 crud 管理时，在 view/todos 中为示例，可 copy 后加以修改,提测前可删除。
 
-该示例基于 store 模式，可自行删除 store，将数据全部由一个 vue 管理或父级管理，也可以采用 vuex 管理。
+该示例的数据管理基于 store 模式，可自行删除 store，将数据存在单文件vue中或由父级管理，也可以采用 vuex，视情况而定。
 
 ### 登陆状态
 

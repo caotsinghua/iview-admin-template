@@ -4,7 +4,7 @@
             <Row :gutter="15">
                 <Col :span="7">
                     <FormItem label="关键词" style="margin-bottom:0">
-                        <Input :value="storeState.keyword" />
+                        <Input v-model.trim="storeState.keyword" />
                     </FormItem>
                 </Col>
                 <Col :span="7">

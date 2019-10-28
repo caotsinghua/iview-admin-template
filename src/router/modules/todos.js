@@ -1,9 +1,9 @@
 import Main from '@/components/main';
-const appRoutes = [
+const todosRoutes = [
     {
         path: '/todos',
         name: 'todos',
-        redirect: '/todos/list',
+        // redirect: '/todos/list',
         meta: {
             title: 'todos',
             icon: 'md-albums',
@@ -24,4 +24,4 @@ const appRoutes = [
     }
 ];
 
-export default appRoutes;
+export default todosRoutes;

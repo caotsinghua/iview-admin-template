@@ -404,3 +404,33 @@ export const setTitle = (routeItem, vm) => {
     const resTitle = pageTitle ? `${title} - ${pageTitle}` : title;
     window.document.title = resTitle;
 };
+
+export const getKeysObject = (obj, keys) => {
+    const o = {};
+    keys.forEach(key => {
+        if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') {
+            o[key] = obj[key];
+        }
+    });
+    return o;
+};
+export const pushDataIndex = (data, page, pageSize) => {
+    return data.map((item, idx) => ({ ...item, index: (page - 1) * pageSize + idx + 1 }));
+};
+export const filterOptionAll = data => {
+    Object.keys({ ...data }).forEach(key => {
+        if (data[key] === 'all') {
+            data[key] = '';
+        }
+    });
+    return data;
+};
+export const filterEmptyData = obj => {
+    const o = {};
+    Object.keys(obj).forEach(key => {
+        if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') {
+            o[key] = obj[key];
+        }
+    });
+    return o;
+};

@@ -130,6 +130,15 @@ class HttpRequest {
     request(options) {
         const instance = axios.create();
         options = Object.assign(this.getInsideConfig(), options);
+        if (options.method === 'get' || options.method === undefined) {
+            if (options.params) {
+                options.params._t = new Date().getTime();
+            } else {
+                options.params = {
+                    _t: new Date().getTime()
+                };
+            }
+        }
         this.interceptors(instance, options.url);
         return instance(options);
     }

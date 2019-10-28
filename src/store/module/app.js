@@ -31,10 +31,14 @@ export default {
         tagNavList: [],
         homeRoute: {},
         local: localRead('local'),
-        env: '' // 系统部署环境
+        env: '', // 系统部署环境
+        routes: [],
+        menuMap: {}
     },
     getters: {
-        menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access)
+        menuList: (state, getters, rootState) => getMenuByRouter(state.routes, rootState.user.access),
+        routes: state => state.routes,
+        menuMap: state => state.menuMap
     },
     mutations: {
         setBreadCrumb(state, route) {
@@ -81,13 +85,19 @@ export default {
         },
         setEnv(state, env) {
             state.env = env;
+        },
+        setRoutes(state, routes) {
+            state.routes = routes;
+        },
+        setMenuMap(state, map) {
+            state.menuMap = map;
         }
     },
     actions: {
         async getEnv({ commit }) {
             const { data } = await getEnv();
             if (data.success && data.data) {
-                commit('setEnv', data.data.env);
+                commit('setEnv', data.data);
             }
         }
     }

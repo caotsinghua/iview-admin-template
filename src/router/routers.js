@@ -1,6 +1,7 @@
 import Main from '@/components/main';
 import config from '../config';
-import appRoutes from './modules/app';
+import todosRoutes from './modules/todos';
+import systemRoutes from './modules/system';
 // import parentView from '@/components/parent-view';
 
 /**
@@ -38,8 +39,29 @@ const changeLogRoute = {
     },
     component: () => import('@/view/change-log/change-log.vue')
 };
-// 无需权限管理的路由
-const staticRoutes = [
+const operateLogRoute = {
+    path: '/operate',
+    name: 'operate',
+    component: Main,
+    meta: {
+        notCache: true,
+        showAlways: true,
+        title: '操作日志'
+    },
+    children: [
+        {
+            path: 'log',
+            name: 'operate-log',
+            meta: {
+                notCache: true,
+                title: '操作日志'
+            },
+            component: () => import('@/view/operate-log/operate-log.vue')
+        }
+    ]
+};
+// 初始路由
+export default [
     {
         path: '/login',
         name: 'login',
@@ -59,7 +81,10 @@ const staticRoutes = [
             notCache: true
         },
         children: [homeRoute, changeLogRoute]
-    },
+    }
+];
+// 无需权限管理的路由
+export const staticRoutes = [
     {
         path: '/401',
         name: 'error_401',
@@ -75,12 +100,7 @@ const staticRoutes = [
             hideInMenu: true
         },
         component: () => import('@/view/error-page/500.vue')
-    }
-];
-
-export default [
-    ...staticRoutes,
-    ...appRoutes,
+    },
     // 404必须放在最后
     {
         path: '*',
@@ -91,3 +111,5 @@ export default [
         component: () => import('@/view/error-page/404.vue')
     }
 ];
+// 从服务器动态配置的路由
+export const dynamicRoutes = [...todosRoutes, ...systemRoutes, operateLogRoute];

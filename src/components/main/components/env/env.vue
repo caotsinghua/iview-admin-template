@@ -1,5 +1,5 @@
 <template>
-    <div class="env" v-if="sysEnv.activeIsolationSystem !== 'prod'">当前环境: {{ sysEnv }}</div>
+    <div class="env" v-if="activeEnv !== 'prod'">当前环境: {{ activeEnv }}</div>
 </template>
 <script>
 export default {
@@ -7,8 +7,8 @@ export default {
         return {};
     },
     computed: {
-        sysEnv() {
-            return this.$store.state.app.env;
+        activeEnv() {
+            return this.$store.state.app.env.activeEnv;
         }
     },
     mounted() {}

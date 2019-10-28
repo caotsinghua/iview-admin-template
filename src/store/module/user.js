@@ -1,23 +1,24 @@
 import { login, logout, getUserStatus } from '@/api/user';
 import { setToken, getToken } from '@/libs/util';
 import { appContainer } from '@/libs/common-utils';
+import { getUserMenuPrivs, getUserOpreratePrivs } from '@/api/privs';
+import { getActionPrivsMap } from '@/libs/tools'; // 操作权限
 // import config from '@/config';
 const state = {
     userInfo: {},
     token: getToken(),
     access: '', // 菜单权限
     hasGetInfo: false,
-    hasLogged: false
+    hasLogged: false,
+    hasGetPrivs: false,
+    menuPrivs: [], // 拥有的菜单权限
+    operatePrivsMap: {} // 拥有的操作权限
 };
 
 const mutations = {
     setUserInfo(state, userInfo) {
         state.userInfo = {};
-        Object.assign(state.userInfo, userInfo, {
-            userName: userInfo.name,
-            userId: userInfo.user_id,
-            avatar: userInfo.avatar
-        });
+        Object.assign(state.userInfo, userInfo);
     },
     setAccess(state, access) {
         state.access = access;
@@ -32,6 +33,15 @@ const mutations = {
     },
     setHasLogged(state, status) {
         state.hasLogged = status;
+    },
+    setMenuPrivs(state, privs) {
+        state.menuPrivs = privs;
+    },
+    setOperatePrivs(state, privs) {
+        state.operatePrivsMap = getActionPrivsMap(privs);
+    },
+    setHasGetPrivs(state, status) {
+        state.hasGetPrivs = status;
     }
 };
 const actions = {
@@ -81,6 +91,21 @@ const actions = {
             commit('setAccess', []);
             commit('setHasLogged', false);
             return false;
+        }
+    },
+    async getUserPrivs({ commit }) {
+        try {
+            const { data } = await getUserMenuPrivs();
+            const { data: operationData } = await getUserOpreratePrivs();
+            if (data.success && data.data && operationData.success && operationData.data) {
+                commit('setMenuPrivs', data.data);
+                commit('setOperatePrivs', operationData.data);
+                return data.data;
+            } else {
+                return [];
+            }
+        } finally {
+            commit('setHasGetPrivs', true);
         }
     }
 };

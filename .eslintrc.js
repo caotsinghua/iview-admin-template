@@ -19,7 +19,8 @@ module.exports = {
             }
         ],
         'no-undef': 'off',
-        camelcase: 'off'
+        camelcase: 'off',
+        eqeqeq:'off'
     },
     parserOptions: {
         parser: 'babel-eslint'

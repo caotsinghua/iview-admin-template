@@ -215,3 +215,116 @@ export const objEqual = (obj1, obj2) => {
         return !keysArr1.some(key => obj1[key] != obj2[key]);
     }
 };
+
+// 转换权限数据到树
+export const parsePrivsToTreeData = function(arr, parentId) {
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] && arr[i].parentPrivId === parentId) {
+            const node = {
+                title: arr[i].privName,
+                label: arr[i].privName,
+                id: arr[i].privId,
+                ...arr[i]
+            };
+            const children = parsePrivsToTreeData(arr, node.id);
+            if (children.length > 0) node.children = children;
+            result.push(node);
+        }
+    }
+    return result;
+};
+
+// 转换权限数据到树,并和已经选择的权限比较，已选的设checked
+export const parsePrivsToTreeDataWithChecked = function(arr, checkedArr, parentId) {
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] && arr[i].parentPrivId === parentId) {
+            const node = {
+                title: arr[i].privName,
+                label: arr[i].privName,
+                id: arr[i].privId,
+                ...arr[i]
+            };
+            if (checkedArr.find(item => item && item.privId === node.id)) {
+                node.checked = true;
+            }
+            const children = parsePrivsToTreeDataWithChecked(arr, checkedArr, node.id);
+            if (children.length > 0) node.children = children;
+            result.push(node);
+        }
+    }
+    return result;
+};
+
+function toggleSystemRoutes(map, isAdmin) {
+    // 系统管理-可见的路由
+    const routes = ['system', 'users-mgr', 'roles-mgr', 'privs-mgr'];
+    routes.forEach(name => {
+        if (isAdmin) {
+            if (!map[name]) {
+                map[name] = {};
+            }
+        } else {
+            delete map[name];
+        }
+    });
+}
+// 映射权限数据到路由
+// 最终返回的routes是该用户有权限访问的
+export function mapPrivsDataToRouter(privs, routes, isAdmin) {
+    const menuMap = {};
+    privs.forEach(priv => {
+        if (priv.privUri && priv.privType !== 'A') {
+            menuMap[priv.privUri] = {
+                ...priv,
+                icon: priv.privIcon,
+                path: priv.privUri,
+                name: priv.privUri
+            };
+        }
+    });
+    toggleSystemRoutes(menuMap, isAdmin);
+
+    function parse(menuMap, routes) {
+        const result = [];
+        for (let i = 0; i < routes.length; i++) {
+            const priv = menuMap[routes[i].name]; // 根据name定位
+            let route = Object.assign({}, routes[i]);
+
+            if (priv && (priv.isShow === undefined || priv.isShow)) {
+                let children = [];
+                if (route.children) {
+                    children = parse(menuMap, route.children);
+                }
+                if (children.length > 0) {
+                    route.children = children; // 不能引用，否则原始
+                } else {
+                    delete route.children;
+                }
+                if (priv.icon) {
+                    route.meta.icon = priv.icon;
+                }
+
+                result.push(route);
+            }
+        }
+        return result;
+    }
+
+    return { routes: parse(menuMap, routes), menuMap };
+}
+export function getActionPrivsMap(privs) {
+    const actionMap = {};
+    /**
+     * 映射结果应该是这样的,每个权限编码唯一
+     * {
+     *  [privCode]:true
+     * }
+     */
+    privs.forEach(priv => {
+        actionMap[priv.privCode] = true;
+    });
+
+    return actionMap;
+}
