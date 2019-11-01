@@ -8,7 +8,7 @@ export default {
     },
     computed: {
         activeEnv() {
-            return this.$store.state.app.env.activeEnv;
+            return this.$store.state.app.env;
         }
     },
     mounted() {}

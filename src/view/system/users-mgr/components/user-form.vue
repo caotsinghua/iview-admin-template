@@ -1,12 +1,14 @@
 <template>
     <Form :model="form" :label-width="100" :rules="rules" ref="form" label-position="left">
+        <!-- 阻止自动保存密码时自动填入 -->
         <div class="hidden">
             <input type="text" />
             <input type="password" />
         </div>
-        <Row :gutter="10">
+        <Row :gutter="10" type="flex">
             <Col :span="12">
-                <FormItem label="用户名" prop="userName">
+                <FormItem label="系统工号" prop="userName">
+                    <!-- <p v-if="userId">{{ form.userName }}</p> -->
                     <Input v-model.trim="form.userName" />
                 </FormItem>
             </Col>
@@ -15,26 +17,15 @@
                     <Input v-model.trim="form.realName" />
                 </FormItem>
             </Col>
-        </Row>
-        <Row :gutter="10">
-            <Col :span="12">
-                <FormItem label="rtx号码" prop="workNo">
-                    <Input v-model.trim="form.workNo" @on-change="handleWorkNoChange" :disabled="!!this.userId" />
-                </FormItem>
-            </Col>
-        </Row>
-        <Row :gutter="10">
-            <!-- 新建时  才显示 -->
+            <!-- 新建时才显示密码框 -->
             <Col :span="12" v-if="!this.userId">
                 <FormItem label="密码" prop="userPwd">
                     <Input v-model="form.userPwd" type="password" />
                 </FormItem>
             </Col>
-        </Row>
-        <Row :gutter="10">
             <Col :span="12">
-                <FormItem label="手机号码" prop="mobile">
-                    <Input v-model.trim="form.mobile" />
+                <FormItem label="手机号码" prop="phone">
+                    <Input v-model.trim="form.phone" />
                 </FormItem>
             </Col>
             <Col :span="12">
@@ -49,78 +40,36 @@
 import { addUser, updateUser } from '@/api/user';
 import { getKeysObject } from '@/libs/util';
 import store from '../store';
-import dayjs from 'dayjs';
 
 export default {
     data() {
         return {
-            isOverDepartment: false,
             form: {
                 userName: '',
                 realName: '',
                 userPwd: '',
-                workNo: '',
-                status: '0',
-                mobile: '',
-                email: '',
-                entryDate: '',
-                leaveDate: '',
-                beforeDept: '',
-                afterDept: '',
-                transferTime: '',
-                duty: 'N', // 职务
-                region: ''
+                phone: '',
+                email: ''
             },
             rules: {
                 userName: [{ required: true, message: '该字段不能为空' }],
                 userPwd: [{ required: true, message: '该字段不能为空' }],
                 realName: [{ required: true, message: '该字段不能为空' }],
-                workNo: [{ required: true, message: '该字段不能为空' }],
-                duty: [{ required: true, message: '该字段不能为空' }],
-                mobile: [{ required: true, message: '该字段不能为空' }],
+                phone: [{ required: true, message: '该字段不能为空' }],
                 email: [{ required: true, message: '该字段不能为空' }]
             },
             userId: null,
             userData: null
         };
     },
-    computed: {},
-    watch: {
-        'form.status': function(val, oldVal) {
-            if (val === '1') {
-                // 离职
-                this.leaveDateRequired = true;
-                this.rules.leaveDate = [{ required: true, message: '该字段不能为空' }];
-            } else {
-                this.leaveDateRequired = false;
-                this.rules.leaveDate = [];
-            }
-        }
-    },
     methods: {
         async submit() {
             const valid = await this.$refs['form'].validate();
             let success = valid;
             if (valid) {
-                const postData = getKeysObject(this.form, [
-                    'userName',
-                    'realName',
-                    'workNo',
-                    'status',
-                    'mobile',
-                    'email',
-                    'entryDate',
-                    'leaveDate',
-                    'userPwd',
-                    'duty',
-                    'region'
-                ]);
-                postData.entryDate = dayjs(postData.entryDate).format('YYYY-MM-DD');
-                if (postData.leaveDate) {
-                    postData.leaveDate = dayjs(postData.leaveDate).format('YYYY-MM-DD');
-                } else {
-                    postData.leaveDate = '';
-                }
+                const postData = getKeysObject(this.form, ['userName', 'userPwd', 'realName', 'phone', 'email']);
+
+                // 是否选中部门,没有部门则不带deptId
                 if (store.state.curSelect && store.state.curSelect.deptId > 0) {
                     postData.deptId = store.state.curSelect.deptId;
                 }
@@ -154,34 +103,7 @@ export default {
         reset() {
             this.$refs['form'].resetFields();
             this.userId = null;
-            this.leaveDateRequired = false;
-            this.isOverDepartment = false;
             this.userData = null;
-            // Object.assign(this, this.$options.data());
-        },
-        handleWorkNoChange(e) {
-            let v = e.target.value;
-
-            let deptAbbr = '';
-            if (this.userData) {
-                deptAbbr = this.getDeptAbbr(this.userData.deptId);
-            } else {
-                deptAbbr = this.getDeptAbbr(store.state.curSelect.deptId);
-            }
-            v = v && `${deptAbbr}${v}`;
-            this.form.userName = v;
-        },
-        getDeptAbbr(deptId) {
-            // 设置一级部门的简写
-            if (!store.state.topDeptMap[deptId]) {
-                const node = store.state.treeMap[deptId];
-                let { parentDeptIds } = node;
-                parentDeptIds = parentDeptIds.split(',');
-                let topDept = store.state.topDeptMap[parentDeptIds[1]];
-                return topDept.deptAbbr;
-            } else {
-                return store.state.topDeptMap[deptId].deptAbbr;
-            }
         }
     }
 };

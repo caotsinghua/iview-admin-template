@@ -13,7 +13,6 @@ import {
 } from '@/libs/util';
 import { getEnv } from '@/api/system';
 import { appContainer } from '@/libs/common-utils';
-import routers from '@/router/routers';
 import config from '@/config';
 const { homeName } = config;
 

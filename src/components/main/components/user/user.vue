@@ -9,17 +9,23 @@
             <Icon :size="18" type="md-arrow-dropdown"></Icon>
             <DropdownMenu slot="list">
                 <DropdownItem name="change-log">更新日志</DropdownItem>
+                <DropdownItem name="change-password">修改密码</DropdownItem>
                 <DropdownItem name="logout">退出登录</DropdownItem>
             </DropdownMenu>
         </Dropdown>
+        <ChangePwdModal ref="change-pwd-modal" />
     </div>
 </template>
 
 <script>
 import './user.less';
 import { mapActions } from 'vuex';
+import ChangePwdModal from './change-password-modal';
 export default {
     name: 'User',
+    components: {
+        ChangePwdModal
+    },
     props: {
         userAvatar: {
             type: String,
@@ -52,6 +58,10 @@ export default {
                 case 'change-log':
                     this.$router.push({ name: 'change-log' });
                     break;
+                case 'change-password': {
+                    this.$refs['change-pwd-modal'].show();
+                    break;
+                }
             }
         }
     }

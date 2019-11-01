@@ -1,5 +1,5 @@
 import axios from '@/libs/api.request';
-
+import qs from 'qs';
 export const login = ({ userName, password }) => {
     const data = {
         userName,
@@ -14,20 +14,19 @@ export const login = ({ userName, password }) => {
 
 export const logout = () => {
     return axios.request({
-        url: '/sys/logout',
-        method: 'post'
+        url: '/sys/logout'
     });
 };
 // 获取当前用户信息
 export const getUserStatus = () =>
     axios.request({
-        url: '/user/curUser'
+        url: '/users/curUser'
     });
 
 // 更新密码
 export const updatePassword = data =>
     axios.request({
-        url: '/user/password',
+        url: '/users/password',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -37,27 +36,24 @@ export const updatePassword = data =>
 // 重置密码
 export const resetPassword = userId =>
     axios.request({
-        url: '/user/reset-pwd',
-        params: {
-            userId
-        }
+        url: `/users/${userId}/reset-pwd`
     });
 export const addUser = data =>
     axios.request({
-        url: '/user',
+        url: '/users',
         data,
         method: 'post'
     });
 // 分页查询用户列表
 export const getUsers = query =>
     axios.request({
-        url: '/user/page',
+        url: '/users/page',
         params: query
     });
 // 查询全部用户
 export const getUsersList = query =>
     axios.request({
-        url: '/user',
+        url: '/users',
         params: query
     });
 export const getDeptUsers = query => {
@@ -71,7 +67,7 @@ export const getDeptUsers = query => {
 // 更新用户
 export const updateUser = data =>
     axios.request({
-        url: `/user`,
+        url: `/users`,
         data,
         method: 'put'
     });

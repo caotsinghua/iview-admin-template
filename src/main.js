@@ -11,14 +11,15 @@ import { initAppByStatus, disableLog, logBuildInfo } from '@/libs/common-utils';
 import mixin from './mixin';
 import store from '@/store';
 import Treeselect from '@riophae/vue-treeselect';
+import ZkTable from 'vue-table-with-tree-grid';
 import './index.less';
 import '@/assets/icons/iconfont.css';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css';
 
 // 实际打包时应该不引入mock
 /* eslint-disable */
-if (process.env.NODE_ENV !== 'production') require('@/mock');
-
+// if (process.env.NODE_ENV !== 'production') require('@/mock');
+Vue.use(ZkTable);
 Vue.use(iView);
 Vue.use(Table);
 Vue.use(TableColumn);

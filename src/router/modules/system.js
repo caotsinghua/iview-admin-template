@@ -11,6 +11,15 @@ const systemRoutes = [
         },
         children: [
             {
+                path: 'dict-mgr',
+                meta: {
+                    title: '字典管理',
+                    icon: 'md-pricetags'
+                },
+                name: 'dict-mgr',
+                component: () => import('@/view/system/dict-mgr/dict-mgr.vue')
+            },
+            {
                 path: 'users-mgr',
                 meta: {
                     title: '用户管理',

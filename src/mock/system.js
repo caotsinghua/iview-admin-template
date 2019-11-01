@@ -5,7 +5,7 @@ import { success, getSuccess } from './common-res';
  */
 export const getEnv = () => {
     return getSuccess({
-        activeEnv: 'dev'
+        activeEnv: 'dev-mock'
     });
 };
 
@@ -17,16 +17,16 @@ export const genContext = () => {
 export const getPrivs = function() {
     return getSuccess([
         {
-            isShow: '',
+            isShow: '11',
             parentPrivId: 0,
-            privCode: '',
-            privIcon: '',
+            privCode: '21312',
+            privIcon: 'md-add',
             privId: 1,
-            privName: '',
+            privName: '1231',
             privOrder: 0,
-            privType: '',
-            privUri: '',
-            remarks: ''
+            privType: 'C',
+            privUri: '1231',
+            remarks: '123123'
         }
     ]);
 };

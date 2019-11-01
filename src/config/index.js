@@ -33,5 +33,13 @@ export default {
         //     showInHeader: false, // 设为false后不会在顶部显示错误日志徽标
         //     developmentOff: false // 设为true后在开发环境不会收集错误信息，方便开发中排查错误
         // }
-    }
+    },
+    /**
+     * @description 用户需要依赖部门管理？true
+     */
+    department: true,
+    /**
+     * @description 是否启用权限管理
+     */
+    usePermission: true
 };

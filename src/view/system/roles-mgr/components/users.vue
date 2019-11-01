@@ -12,7 +12,7 @@
             <el-table-column label="用户名" prop="userName"></el-table-column>
             <el-table-column label="姓名" prop="realName"></el-table-column>
             <el-table-column label="rtx工号" prop="workNo"></el-table-column>
-            <el-table-column label="手机" prop="mobile" width="120"></el-table-column>
+            <el-table-column label="手机" prop="phone" width="120"></el-table-column>
             <el-table-column label="邮箱" prop="email" width="200"></el-table-column>
             <!-- TODO:字段对应 -->
             <!-- <el-table-column label="权限角色" prop="id"></el-table-column>

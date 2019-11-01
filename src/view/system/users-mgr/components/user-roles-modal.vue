@@ -3,9 +3,6 @@
         <el-table :data="roles" v-loading="loading">
             <el-table-column prop="roleName" label="角色名称"></el-table-column>
             <el-table-column prop="remark" label="角色备注"></el-table-column>
-            <!-- <el-table-column prop="roleCode" label="角色编码"></el-table-column>
-                <el-table-column prop="dataRangeType" label="数据范围类型"></el-table-column>
-                <el-table-column prop="deptId" label="部门主键"></el-table-column> -->
         </el-table>
         <Page
             :current="page"

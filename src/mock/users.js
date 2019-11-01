@@ -38,14 +38,14 @@ export const getUsers = () =>
                     remarks: ''
                 }
             ],
-            phone: '',
-            pwdSalt: '',
-            realName: '',
+            phone: '123123',
+            pwdSalt: 'asdasd',
+            realName: 'cccaaac',
             roles: [],
             state: 0,
             userId: 0,
-            userName: '',
-            userPwd: ''
+            userName: 'ccccc',
+            userPwd: 'ccccc'
         }
     ]);
 export const getUsersPage = () =>
@@ -84,14 +84,14 @@ export const getUsersPage = () =>
                         remarks: ''
                     }
                 ],
-                phone: '',
-                pwdSalt: '',
-                realName: '',
+                phone: '123213',
+                pwdSalt: '123',
+                realName: '123123',
                 roles: [],
                 state: 0,
                 userId: 0,
-                userName: '',
-                userPwd: ''
+                userName: 'asdsada',
+                userPwd: 'asdads'
             }
         ],
         pageSize: 0,

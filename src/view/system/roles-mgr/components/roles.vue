@@ -44,9 +44,9 @@
                 </FormItem>
                 <FormItem label="角色类型" prop="roleType">
                     <Select v-model="roleForm.roleType">
-                        <!-- <Option v-for="dict in this[dictMap.roleType]" :key="dict.dictValue" :value="dict.dictValue">{{
+                        <Option v-for="dict in this[dictMap.role_type]" :key="dict.dictValue" :value="dict.dictValue">{{
                             dict.dictLabel
-                        }}</Option> -->
+                        }}</Option>
                     </Select>
                 </FormItem>
             </Form>
@@ -60,8 +60,8 @@
 <script>
 import store from '../store';
 import { deleteRole, addRole } from '@/api/roles';
-// import { dictMap } from '@/constants';
-// import { mapState } from 'vuex';
+import { dictMap } from '@/constants';
+import { mapState } from 'vuex';
 
 export default {
     data() {
@@ -73,12 +73,12 @@ export default {
                 roleName: [{ required: true, message: '该字段不能为空' }],
                 roleCode: [{ required: true, message: '该字段不能为空' }],
                 roleType: [{ required: true, message: '该字段不能为空' }]
-            }
-            // dictMap
+            },
+            dictMap
         };
     },
     computed: {
-        // ...mapState('dicts', [dictMap.roleType])
+        ...mapState('system', [dictMap.role_type])
     },
     async mounted() {
         await store.getRoles();
@@ -141,7 +141,8 @@ export default {
         },
         roleTypeFormatter(_, __, value) {
             if (value) {
-                const findItem = this[dictMap.roleType].find(item => item.dictValue === value);
+                const findItem =
+                    this[dictMap.roleType] && this[dictMap.roleType].find(item => item.dictValue === value);
                 return findItem && findItem.dictLabel;
             }
             return value;

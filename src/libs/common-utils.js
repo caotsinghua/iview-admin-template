@@ -7,7 +7,8 @@ import { getToken } from './util';
 
 export const appContainer = {
     router: null,
-    vm: null
+    vm: null,
+    isRebuild: false
 };
 function initApp() {
     const router = createRouter();
@@ -19,7 +20,7 @@ function initApp() {
         render: h => h(App)
     });
 }
-// ============\使用getStatus判断登陆态时使用
+// ============ 使用getStatus判断登陆态时使用
 export const initAppByStatus = async () => {
     iView.Spin.show({
         render: h => {

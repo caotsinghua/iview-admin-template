@@ -1,9 +1,10 @@
 import { login, logout, getUserStatus } from '@/api/user';
 import { setToken, getToken } from '@/libs/util';
-import { appContainer } from '@/libs/common-utils';
+import { appContainer, initApp } from '@/libs/common-utils';
 import { getUserMenuPrivs, getUserOpreratePrivs } from '@/api/privs';
 import { getActionPrivsMap } from '@/libs/tools'; // 操作权限
-// import config from '@/config';
+import config from '@/config';
+
 const state = {
     userInfo: {},
     token: getToken(),
@@ -58,7 +59,7 @@ const actions = {
 
     // 退出登录
     async handleLogOut({ state, commit, rootState }) {
-        const { router } = appContainer;
+        const { router, vm } = appContainer;
         const { data } = await logout();
         commit('setHasLogged', false);
         commit('setHasGetInfo', false);
@@ -68,11 +69,18 @@ const actions = {
             router.replace({
                 name: 'login'
             });
+            if (config.usePermission) {
+                // 只有启用权限管理时才重建app
+                vm.$nextTick(() => {
+                    appContainer.isRebuild = true;
+                    initApp();
+                });
+            }
         }
         return data;
     },
     // 获取用户信息和状态
-    async getUserStatus({ commit }, status) {
+    async getUserStatus({ commit, dispatch }, status) {
         // 直接设置登陆态
         if (status !== undefined) {
             commit('setHasLogged', status);
@@ -80,6 +88,7 @@ const actions = {
         }
         const { data } = await getUserStatus();
         if (data.success && data.data) {
+            dispatch('system/getDicts');
             commit('setUserInfo', data.data);
             commit('setHasLogged', true);
             commit('setHasGetInfo', true);

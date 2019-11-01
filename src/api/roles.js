@@ -7,7 +7,7 @@ import axios from '../libs/api.request';
 
 export const getRoles = query =>
     axios.request({
-        url: '/roles',
+        url: '/roles/page',
         params: query
     });
 export const addRole = data =>

@@ -1,4 +1,7 @@
+// import iView from 'iview';
+import { parseArrayToTreeData } from '@/libs/tools';
 import { getUsers, getDeptFlowUsers, getDeptUsers } from '@/api/user';
+import { getDeptsList } from '@/api/depts';
 import { filterEmptyData, filterOptionAll, getKeysObject, pushDataIndex } from '@/libs/util';
 export default {
     state: {
@@ -8,7 +11,6 @@ export default {
         },
         curSelect: null,
         data: [], // 部门普通用户
-        workFlowUsers: [], // 部门工作流用户
         treeData: [],
         treeMap: {},
         searchData: [], // 用来搜索部门树
@@ -16,7 +18,6 @@ export default {
         pageSize: 20,
         total: 0,
         loading: false,
-        flowUsersLoading: false,
         topDeptMap: {} // 一级部门映射
     },
     async getData(query = {}) {
@@ -76,7 +77,7 @@ export default {
     },
 
     async getTreeData() {
-        const { data } = await getDepts();
+        const { data } = await getDeptsList();
         if (data.success && data.data) {
             const source = data.data;
             source.push({

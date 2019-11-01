@@ -434,3 +434,12 @@ export const filterEmptyData = obj => {
     });
     return o;
 };
+
+export const expandOrRetract = (treeData, _this, expand) => {
+    for (let i = 0; i < treeData.length; i++) {
+        if (treeData[i].children) {
+            _this.$set(treeData[i], 'expand', expand);
+            expandOrRetract(treeData[i].children, _this, expand);
+        }
+    }
+};

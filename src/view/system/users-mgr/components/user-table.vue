@@ -5,15 +5,19 @@
                 <Col :span="16">
                     <Form :label-width="50" inline>
                         <FormItem label="关键字">
-                            <Input placeholder="系统工号、姓名、rtx工号" v-model.trim="queryForm.keyword" />
+                            <Input placeholder="系统工号、姓名" v-model.trim="queryForm.keyword" />
                         </FormItem>
                         <Button type="primary" @click="handleSearch">查询</Button>
                     </Form>
                 </Col>
+                <Col>
+                    <div class="right-actions">
+                        <Button @click="handleAdd" type="primary" icon="md-add" style="margin-right:10px;"
+                            >新建用户</Button
+                        >
+                    </div>
+                </Col>
             </Row>
-            <div class="right-actions">
-                <Button @click="handleAdd" type="primary" icon="md-add" style="margin-bottom:10px;">新建员工</Button>
-            </div>
         </header>
         <main>
             <el-table :data="storeState.data" v-loading="storeState.loading" size="mini">
@@ -32,10 +36,9 @@
                         </Dropdown>
                     </template>
                 </el-table-column>
-                <el-table-column label="用户名" prop="userName"></el-table-column>
+                <el-table-column label="系统工号" prop="userName"></el-table-column>
                 <el-table-column label="姓名" prop="realName"></el-table-column>
-                <el-table-column label="rtx工号" prop="workNo"></el-table-column>
-                <el-table-column label="手机" prop="mobile"></el-table-column>
+                <el-table-column label="手机" prop="phone"></el-table-column>
                 <el-table-column label="邮箱" prop="email" width="200px"></el-table-column>
                 <el-table-column label="权限角色">
                     <template slot-scope="{ row }">
@@ -69,7 +72,6 @@ import store from '../store';
 import EditModal from './edit-modal';
 import UserRolesModal from './user-roles-modal';
 import { resetPassword } from '@/api/user';
-
 export default {
     components: {
         EditModal,
@@ -81,7 +83,6 @@ export default {
             queryForm: store.state.queryForm
         };
     },
-    computed: {},
     mounted() {
         store.getData();
     },
@@ -89,7 +90,6 @@ export default {
         handleAdd() {
             this.$refs['edit-modal'].show();
         },
-        handleImport() {},
         handleSearch() {
             store.getData({ page: 1 });
         },
@@ -121,10 +121,6 @@ export default {
         },
         handleShowUserRoles(row) {
             this.$refs['user-roles-modal'].show(row);
-        },
-        regionFormatter(_, __, value) {
-            const findOne = this[dictMap.region].find(item => item.dictValue === value);
-            return findOne && findOne.dictLabel;
         }
     }
 };

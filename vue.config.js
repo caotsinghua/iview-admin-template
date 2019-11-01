@@ -63,16 +63,16 @@ module.exports = {
     devServer: {
         // host: '172.31.225.20',
         port: 8081,
-        disableHostCheck: true
-        // proxy: {
-        //     '/proj/api': {
-        //         target: 'http://172.31.225.54:8082',
-        //         ws: false, // 关闭websocket
-        //         changeOrigin: true
-        //         // pathRewrite: {
-        //         //     '^/api/': '/api/'
-        //         // }
-        //     }
-        // }
+        disableHostCheck: true,
+        proxy: {
+            '/proj/api': {
+                target: 'http://172.31.225.54:8082',
+                ws: false, // 关闭websocket
+                changeOrigin: true
+                // pathRewrite: {
+                //     '^/api/': '/api/'
+                // }
+            }
+        }
     }
 };

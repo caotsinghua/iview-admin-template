@@ -20,11 +20,12 @@
         <div id="containerId" style="border:1px solid #d7dde4;width:100%;height:46px;margin-bottom:10px;"></div>
         <!-- end -->
         <FormItem>
-            <Button @click="handleSubmit" type="primary" long>登录</Button>
+            <Button @click="handleSubmit" type="primary" long :loading="logging">登录</Button>
         </FormItem>
     </Form>
 </template>
 <script>
+import { appContainer } from '@/libs/common-utils';
 import axios from '@/libs/api.request';
 let capt = null;
 let timer = null;
@@ -42,12 +43,16 @@ export default {
             default: () => {
                 return [{ required: true, message: '密码不能为空', trigger: 'blur' }];
             }
+        },
+        logging: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
         return {
             form: {
-                userName: 'super_admin',
+                userName: 'admin',
                 password: ''
             },
             captchaConsolidateReq: {
@@ -67,6 +72,12 @@ export default {
         }
     },
     mounted() {
+        if (appContainer.isRebuild) {
+            // 如果是重新构建app，不再生产验证码
+            console.log('rebuild');
+            appContainer.isRebuild = false;
+            return;
+        }
         this.getAppId();
         timer = setInterval(() => {
             this.getAppId();

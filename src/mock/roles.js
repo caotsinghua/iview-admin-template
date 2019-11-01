@@ -10,13 +10,13 @@ export const getRoles = () =>
         list: [
             {
                 deptId: 0,
-                isShow: '',
+                isShow: true,
                 remark: '',
                 roleCode: '',
                 roleId: 0,
-                roleName: '',
+                roleName: 'mock角色1',
                 roleOrder: 0,
-                roleType: ''
+                roleType: '1'
             }
         ],
         pageSize: 10,
@@ -59,14 +59,14 @@ export const getRolesNotUsers = () =>
                         remarks: ''
                     }
                 ],
-                phone: '',
+                phone: '12321',
                 pwdSalt: '',
-                realName: '',
+                realName: '12312',
                 roles: [],
                 state: 0,
                 userId: 0,
-                userName: '',
-                userPwd: ''
+                userName: 'aaa',
+                userPwd: 'aaa'
             }
         ],
         pageSize: 0,
@@ -109,14 +109,14 @@ export const getRoleUsers = () =>
                         remarks: ''
                     }
                 ],
-                phone: '',
-                pwdSalt: '',
-                realName: '',
+                phone: '12',
+                pwdSalt: 'asd',
+                realName: 'sadds',
                 roles: [],
                 state: 0,
                 userId: 0,
-                userName: '',
-                userPwd: ''
+                userName: 'asaa',
+                userPwd: 'asdsa'
             }
         ],
         pageSize: 0,
@@ -131,12 +131,12 @@ export const getUserRoles = () =>
             {
                 deptId: 0,
                 isShow: '',
-                remark: '',
-                roleCode: '',
+                remark: 'asdsda',
+                roleCode: '1231',
                 roleId: 0,
-                roleName: '',
+                roleName: 'asdas',
                 roleOrder: 0,
-                roleType: ''
+                roleType: '213'
             }
         ],
         pageSize: 0,

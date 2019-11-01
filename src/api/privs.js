@@ -2,7 +2,7 @@ import axios from '../libs/api.request';
 
 export const getPrivs = query =>
     axios.request({
-        url: '/privs',
+        url: '/privs/list',
         params: query
     });
 export const addPriv = data =>
@@ -25,7 +25,7 @@ export const deletePriv = privId =>
 // 获取登陆用户的菜单权限
 export const getUserMenuPrivs = () =>
     axios.request({
-        url: '/privs/menus'
+        url: '/privs/menu'
     });
 export const getUserOpreratePrivs = () =>
     axios.request({

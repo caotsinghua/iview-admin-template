@@ -7,7 +7,7 @@
         <div class="login-con">
             <Card icon="log-in" title="欢迎登录" :bordered="false">
                 <div class="form-con">
-                    <login-form @on-success-valid="handleSubmit"></login-form>
+                    <login-form @on-success-valid="handleSubmit" :logging="logging"></login-form>
                 </div>
             </Card>
         </div>
@@ -21,10 +21,16 @@ export default {
     components: {
         LoginForm
     },
+    data() {
+        return {
+            logging: false
+        };
+    },
     methods: {
         ...mapActions(['handleLogin']),
         async handleSubmit({ userName, password }) {
             try {
+                this.logging = true;
                 const logged = await this.handleLogin({ userName, password });
                 if (logged) {
                     this.$router.push({
@@ -34,6 +40,7 @@ export default {
             } catch (e) {
                 console.error(e);
             }
+            this.logging = false;
         }
     }
 };

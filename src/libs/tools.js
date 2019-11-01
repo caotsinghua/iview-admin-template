@@ -259,7 +259,7 @@ export const parsePrivsToTreeDataWithChecked = function(arr, checkedArr, parentI
 
 function toggleSystemRoutes(map, isAdmin) {
     // 系统管理-可见的路由
-    const routes = ['system', 'users-mgr', 'roles-mgr', 'privs-mgr'];
+    const routes = ['system', 'users-mgr', 'roles-mgr', 'privs-mgr', 'dict-mgr'];
     routes.forEach(name => {
         if (isAdmin) {
             if (!map[name]) {
@@ -328,3 +328,60 @@ export function getActionPrivsMap(privs) {
 
     return actionMap;
 }
+
+// 把部门数据转化成树结构
+export const parseArrayToTreeData = function(arr, parentId) {
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].parentDeptId === parentId) {
+            const node = {
+                title: arr[i].deptName,
+                label: arr[i].deptName,
+                id: arr[i].deptId,
+                value: arr[i].deptId,
+                expand: true,
+                selected: false,
+                ...arr[i]
+            };
+            const children = parseArrayToTreeData(arr, node.id);
+            if (children.length > 0) node.children = children;
+            result.push(node);
+        }
+    }
+    return result;
+};
+
+export const recurToTreeData = function(arr, parentId, limit) {
+    var itemArr = [];
+    for (var i = 0; i < arr.length; i++) {
+        var node = arr[i];
+        // data.splice(i, 1)
+        if (node.parentDeptId === parentId) {
+            var newNode = merge({}, node);
+            newNode.id = node.deptId;
+            newNode.label = node.deptName;
+            if (limit && newNode.deptType === 'D') {
+                newNode.isDisabled = true;
+            }
+            if (checkIsChild(arr, node.deptId) === false) {
+                if (newNode.parentDeptId === -1) newNode.isDefaultExpanded = true;
+                newNode.children = recurToTreeData(arr, node.deptId, limit);
+            }
+            itemArr.push(newNode);
+        }
+    }
+    return itemArr;
+};
+export const checkIsChild = function(arr, id) {
+    let isChild = true;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].parentDeptId === id) {
+            isChild = false;
+            break;
+        }
+    }
+    return isChild;
+};
+export const merge = function() {
+    return Object.assign.apply(this, arguments);
+};

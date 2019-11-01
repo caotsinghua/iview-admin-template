@@ -25,7 +25,7 @@
             <el-table-column label="用户名" prop="userName"></el-table-column>
             <el-table-column label="姓名" prop="realName"></el-table-column>
             <el-table-column label="rtx工号" prop="workNo"></el-table-column>
-            <el-table-column label="手机" prop="mobile"></el-table-column>
+            <el-table-column label="手机" prop="phone"></el-table-column>
             <el-table-column label="邮箱" prop="email"></el-table-column>
         </el-table>
         <Row type="flex" justify="end" style="margin-top:10px">
