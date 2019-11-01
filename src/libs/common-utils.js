@@ -10,7 +10,7 @@ export const appContainer = {
     vm: null,
     isRebuild: false
 };
-function initApp() {
+export function initApp() {
     const router = createRouter();
     appContainer.router = router;
     appContainer.vm = new Vue({
