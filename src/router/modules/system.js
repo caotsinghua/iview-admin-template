@@ -45,6 +45,15 @@ const systemRoutes = [
                 },
                 name: 'privs-mgr',
                 component: () => import('@/view/system/privs-mgr/privs-mgr.vue')
+            },
+            {
+                path:'configs-mgr',
+                name:'configs-mgr',
+                meta:{
+                    title:'系统配置管理',
+                    icon:'md-cog'
+                },
+                component:()=>import('@/view/system/configs-mgr/index.vue')
             }
         ]
     }

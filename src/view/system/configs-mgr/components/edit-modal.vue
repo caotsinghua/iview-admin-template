@@ -1,18 +1,18 @@
 <template>
-    <Modal v-model="visible" :title="`${this.row ? '更新' : '创建'}表单`" width="700" @on-cancel="hide">
-        <Form ref="form" :model="form" :label-width="100" :rules="rules">
-            <Row class-name="form-row" :gutter="15">
-                <Col :xs="24" :sm="24" :md="12">
-                    <FormItem label="title" prop="title">
-                        <Input v-model="form.title" placeholder="请输入..." :readonly="readOnly" />
-                    </FormItem>
-                </Col>
-                <Col :xs="24" :sm="24" :md="12">
-                    <FormItem label="author" prop="author">
-                        <Input v-model="form.author" placeholder="请输入..." :readonly="readOnly" />
-                    </FormItem>
-                </Col>
-            </Row>
+    <Modal v-model="visible" :title="`${this.row ? '更新' : '创建'}表单`" width="500" @on-cancel="hide">
+        <Form ref="form" :model="form" :label-width="100" :rules="rules" label-position="left">
+            <FormItem label="配置名" prop="configName">
+                <Input v-model="form.configName" placeholder="请输入配置名..." :readonly="readOnly" />
+            </FormItem>
+            <FormItem label="配置值" prop="configValue">
+                <Input type="textarea" v-model="form.configValue" placeholder="请输入配置值..." :readonly="readOnly" />
+            </FormItem>
+            <FormItem label="配置编码" prop="configCode">
+                <Input v-model="form.configCode" placeholder="请输入..." :readonly="readOnly" />
+            </FormItem>
+            <FormItem label="描述" prop="configDesc">
+                <Input v-model="form.configDesc" placeholder="请输入..." :readonly="readOnly" />
+            </FormItem>
         </Form>
         <template slot="footer">
             <Button type="primary" :loading="submiting" v-if="!readOnly" @click="handleSubmit">{{
@@ -24,15 +24,9 @@
 </template>
 
 <script>
+import { addConfig, updateConfigByCode } from '@/api/configs';
+import { getKeysObject } from '@/libs/util';
 import store from '../store';
-function updateTodo() {
-    return {
-        data: {
-            success: true
-        }
-    };
-}
-const createTodo = updateTodo;
 export default {
     data() {
         return {
@@ -41,17 +35,25 @@ export default {
             submiting: false,
             readOnly: false,
             form: {
-                title: '',
-                author: ''
+                configCode: '',
+                configDesc: '',
+                configName: '',
+                configValue: ''
             },
             rules: {
-                title: [
+                configCode: [
                     {
                         required: true,
                         message: '该字段不能为空'
                     }
                 ],
-                author: [
+                configName: [
+                    {
+                        required: true,
+                        message: '该字段不能为空'
+                    }
+                ],
+                configValue: [
                     {
                         required: true,
                         message: '该字段不能为空'
@@ -64,6 +66,9 @@ export default {
         show(row, readOnly) {
             this.row = row;
             this.readOnly = !!readOnly;
+            if (row) {
+                Object.assign(this.form, getKeysObject(row, ['configCode', 'configDesc', 'configName', 'configValue']));
+            }
             this.visible = true;
         },
         hide() {
@@ -74,25 +79,24 @@ export default {
         async handleSubmit() {
             const valid = await this.$refs['form'].validate();
             if (valid) {
-                let success = false,
-                    message = '';
+                let success, message;
                 try {
                     this.submiting = true;
                     if (this.row) {
-                        const { data } = await updateTodo(this.form);
+                        const { data } = await updateConfigByCode(this.form);
                         success = data.success;
                         message = data.message;
                     } else {
-                        const { data } = await createTodo(this.form);
+                        const { data } = await addConfig(this.form);
                         success = data.success;
                         message = data.message;
                     }
                     if (success) {
                         this.$Message.success('操作成功');
-                        store.getData();
                         this.hide();
+                        store.getData();
                     } else {
-                        this.$Message.error('操作失败');
+                        this.$Message.error(message || '操作失败');
                     }
                 } catch (e) {
                     throw e;

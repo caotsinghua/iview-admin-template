@@ -50,7 +50,7 @@ class HttpRequest {
                 if (data.code === '10000') {
                     // 是否是获取用户信息/状态的接口
                     // TODO：如果获取用户状态接口无登陆验证则不需该校验
-                    const isGetInfo = ~res.config.url.indexOf('user/status');
+                    const isGetInfo = ~res.config.url.indexOf('users/cur-user');
                     if (!isGetInfo) {
                         store.dispatch('handleLogOut');
                     }

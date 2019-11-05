@@ -28,10 +28,10 @@ export default {
     },
     methods: {
         ...mapActions(['handleLogin']),
-        async handleSubmit({ userName, password }) {
+        async handleSubmit({ username, password }) {
             try {
                 this.logging = true;
-                const logged = await this.handleLogin({ userName, password });
+                const logged = await this.handleLogin({ username, password });
                 if (logged) {
                     this.$router.push({
                         name: this.$config.homeName

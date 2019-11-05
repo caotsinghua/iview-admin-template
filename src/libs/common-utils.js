@@ -12,6 +12,7 @@ export const appContainer = {
 };
 export function initApp() {
     const router = createRouter();
+    console.log('重建');
     appContainer.router = router;
     appContainer.vm = new Vue({
         el: '#app',

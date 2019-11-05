@@ -52,7 +52,6 @@ export default {
             store.setCurSelect(node);
             store.clearData();
             store.getData();
-            store.getDeptFlowUsers();
         },
         expandAll() {
             expandOrRetract(this.storeState.treeData, this, true);
@@ -90,7 +89,6 @@ export default {
             }
             store.setCurSelect(treeNode);
             store.getData();
-            store.getDeptFlowUsers();
         }
     }
 };

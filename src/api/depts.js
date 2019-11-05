@@ -14,21 +14,21 @@ export const getDeptsList = query =>
 
 export const addDept = data =>
     axios.request({
-        url: '/depts/add',
+        url: '/depts',
         data,
         method: 'post'
     });
 
 export const updateDept = data =>
     axios.request({
-        url: '/depts/update',
+        url: '/depts',
         data,
-        method: 'post'
+        method: 'put'
     });
 export const updateDeptStatus = ({ deptId, state }) =>
     axios.request({
         url: `/depts/updateStatus/${deptId}/${state}`,
-        method: 'put'
+        method: 'post'
     });
 
 export const getDept = deptId =>

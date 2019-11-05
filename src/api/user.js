@@ -1,8 +1,8 @@
 import axios from '@/libs/api.request';
 import qs from 'qs';
-export const login = ({ userName, password }) => {
+export const login = ({ username, password }) => {
     const data = {
-        userName,
+        username,
         password
     };
     return axios.request({
@@ -20,7 +20,7 @@ export const logout = () => {
 // 获取当前用户信息
 export const getUserStatus = () =>
     axios.request({
-        url: '/users/curUser'
+        url: '/users/cur-user'
     });
 
 // 更新密码
@@ -60,7 +60,7 @@ export const getDeptUsers = query => {
     const deptId = query.deptId;
     delete query.deptId;
     return axios.request({
-        url: `/dept/${deptId}/users`,
+        url: `/depts/${deptId}/users`,
         params: query
     });
 };
@@ -70,8 +70,4 @@ export const updateUser = data =>
         url: `/users`,
         data,
         method: 'put'
-    });
-export const getDeptFlowUsers = deptId =>
-    axios.request({
-        url: `/dept-flowuser/${deptId}/users`
     });

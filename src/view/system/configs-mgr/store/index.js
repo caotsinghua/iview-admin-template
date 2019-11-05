@@ -1,20 +1,4 @@
-const getTodos = () => {
-    return {
-        data: {
-            data: {
-                list: [
-                    {
-                        id: 1,
-                        title: 'aa',
-                        author: 'james'
-                    }
-                ],
-                totalCount: 1
-            }
-        }
-    };
-};
-
+import { getConfigs } from '@/api/configs';
 export default {
     state: {
         data: [],
@@ -24,7 +8,7 @@ export default {
         loading: false,
         // queryInfo
         queryInfo: {
-            keyword: ''
+            configCode: ''
         }
     },
     // actions
@@ -35,8 +19,12 @@ export default {
         this.state.pageSize = pageSize;
         try {
             this.state.loading = true;
-            // TODO:change
-            const { data } = await getTodos(query);
+            const queryData = {
+                currPage: page,
+                pageSize,
+                ...this.state.queryInfo
+            };
+            const { data } = await getConfigs(queryData);
             if (data.success) {
                 this.state.data = data.data.list;
                 this.state.total = data.data.totalCount;
@@ -59,7 +47,7 @@ export default {
             loading: false,
             // queryInfo
             queryInfo: {
-                keyword: ''
+                configCode: ''
             }
         });
     }

@@ -58,7 +58,7 @@ function createRouterWithPermission() {
                      * 需要针对管理员等用户直接显示的路由，不管权限有没有配置
                      * 目前设为true
                      */
-                    const isAdmin = (roles && roles.some(role => role === 'A' || role === 'B')) || true;
+                    const isAdmin = roles && roles.some(role => role === 'A' || role === 'B');
                     const { routes: parsedDynamicRoutes, menuMap } = mapPrivsDataToRouter(
                         privs,
                         dynamicRoutes,
@@ -86,7 +86,7 @@ function createRouterWithPermission() {
 //  没有权限控制的路由
 function createRouterWithoutPermission() {
     const allRoutes = [...routes, ...dynamicRoutes, ...staticRoutes];
-
+    store.commit('setRoutes', allRoutes);
     const router = new Router({
         routes: allRoutes,
         mode: 'history'

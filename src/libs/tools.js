@@ -1,3 +1,4 @@
+import config from '@/config';
 export const forEach = (arr, fn) => {
     if (!arr.length || !fn) return;
     let i = -1;
@@ -259,7 +260,8 @@ export const parsePrivsToTreeDataWithChecked = function(arr, checkedArr, parentI
 
 function toggleSystemRoutes(map, isAdmin) {
     // 系统管理-可见的路由
-    const routes = ['system', 'users-mgr', 'roles-mgr', 'privs-mgr', 'dict-mgr'];
+    // const routes = ['system', 'users-mgr', 'roles-mgr', 'privs-mgr', 'dict-mgr','configs-mgr'];
+    const routes = config.adminRoutes || [];
     routes.forEach(name => {
         if (isAdmin) {
             if (!map[name]) {
@@ -285,14 +287,13 @@ export function mapPrivsDataToRouter(privs, routes, isAdmin) {
         }
     });
     toggleSystemRoutes(menuMap, isAdmin);
-
     function parse(menuMap, routes) {
         const result = [];
         for (let i = 0; i < routes.length; i++) {
             const priv = menuMap[routes[i].name]; // 根据name定位
             let route = Object.assign({}, routes[i]);
-
-            if (priv && (priv.isShow === undefined || priv.isShow)) {
+            // priv.isShow 可能是null
+            if (priv && (priv.isShow == undefined || priv.isShow)) {
                 let children = [];
                 if (route.children) {
                     children = parse(menuMap, route.children);

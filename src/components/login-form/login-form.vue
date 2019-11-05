@@ -1,7 +1,7 @@
 <template>
     <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
-        <FormItem prop="userName">
-            <Input v-model="form.userName" placeholder="请输入用户名">
+        <FormItem prop="username">
+            <Input v-model="form.username" placeholder="请输入用户名">
                 <span slot="prepend">
                     <Icon :size="16" type="ios-person"></Icon>
                 </span>
@@ -32,7 +32,7 @@ let timer = null;
 export default {
     name: 'LoginForm',
     props: {
-        userNameRules: {
+        usernameRules: {
             type: Array,
             default: () => {
                 return [{ required: true, message: '账号不能为空', trigger: 'blur' }];
@@ -52,7 +52,7 @@ export default {
     data() {
         return {
             form: {
-                userName: 'admin',
+                username: 'admin',
                 password: ''
             },
             captchaConsolidateReq: {
@@ -66,7 +66,7 @@ export default {
     computed: {
         rules() {
             return {
-                userName: this.userNameRules,
+                username: this.usernameRules,
                 password: this.passwordRules
             };
         }
@@ -88,19 +88,19 @@ export default {
             this.captchaConsolidateReq.ContextId = capt && capt.getValidate().contextId;
             this.captchaConsolidateReq.ValidateResult = capt && capt.getValidate().validate;
             // TODO:启用验证码时开启必选
-            // if (!this.captchaConsolidateReq.ContextId || !this.captchaConsolidateReq.ValidateResult) {
-            //     console.log(this.captchaConsolidateReq);
-            //     this.$Message.warning({
-            //         content: '请输入合法验证码',
-            //         duration: 5,
-            //         closable: true
-            //     });
-            //     return;
-            // }
+            if (!this.captchaConsolidateReq.ContextId || !this.captchaConsolidateReq.ValidateResult) {
+                console.log(this.captchaConsolidateReq);
+                this.$Message.warning({
+                    content: '请输入合法验证码',
+                    duration: 5,
+                    closable: true
+                });
+                return;
+            }
             this.$refs.loginForm.validate(async valid => {
                 if (valid) {
                     await this.$emit('on-success-valid', {
-                        userName: this.form.userName,
+                        username: this.form.username,
                         password: this.form.password,
                         captchaConsolidateReq: this.captchaConsolidateReq
                     });

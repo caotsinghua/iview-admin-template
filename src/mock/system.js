@@ -164,3 +164,27 @@ Mock.mock(/\/privs\/[\w]+/, 'delete', success); // 删除权限
 Mock.mock(/\/privs/, 'get', getPrivs);
 Mock.mock(/\/privs/, 'post', success);
 Mock.mock(/\/privs/, 'put', success);
+Mock.mock(
+    /\/dicts\/types/,
+    getSuccess([
+        {
+            sysDicts: [
+                {
+                    createBy: 0,
+                    createTime: '',
+                    dictId: 0,
+                    dictLabel: '',
+                    dictOrder: 0,
+                    dictStatus: '',
+                    dictType: '',
+                    dictValue: '',
+                    parentDictId: 0,
+                    remark: '',
+                    updateBy: 0,
+                    updateTime: ''
+                }
+            ],
+            type: ''
+        }
+    ])
+);

@@ -7,7 +7,7 @@
         </div>
         <Row :gutter="10" type="flex">
             <Col :span="12">
-                <FormItem label="系统工号" prop="userName">
+                <FormItem label="用户名" prop="userName">
                     <!-- <p v-if="userId">{{ form.userName }}</p> -->
                     <Input v-model.trim="form.userName" />
                 </FormItem>

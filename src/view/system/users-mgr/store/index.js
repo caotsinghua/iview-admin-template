@@ -1,6 +1,6 @@
 // import iView from 'iview';
 import { parseArrayToTreeData } from '@/libs/tools';
-import { getUsers, getDeptFlowUsers, getDeptUsers } from '@/api/user';
+import { getUsers, getDeptUsers } from '@/api/user';
 import { getDeptsList } from '@/api/depts';
 import { filterEmptyData, filterOptionAll, getKeysObject, pushDataIndex } from '@/libs/util';
 export default {
@@ -57,19 +57,6 @@ export default {
             console.log(e);
         } finally {
             this.state.loading = false;
-        }
-    },
-    async getDeptFlowUsers() {
-        const deptId = this.state.curSelect && this.state.curSelect.id;
-        if (!deptId) return;
-        this.state.flowUsersLoading = true;
-        try {
-            const { data: flowUserData } = await getDeptFlowUsers(deptId);
-            if (flowUserData.success && flowUserData.data) {
-                this.state.workFlowUsers = flowUserData.data;
-            }
-        } finally {
-            this.state.flowUsersLoading = false;
         }
     },
     clearData() {

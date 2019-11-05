@@ -5,7 +5,7 @@
                 <Col :span="16">
                     <Form :label-width="50" inline>
                         <FormItem label="关键字">
-                            <Input placeholder="系统工号、姓名" v-model.trim="queryForm.keyword" />
+                            <Input placeholder="用户名、姓名" v-model.trim="queryForm.keyword" />
                         </FormItem>
                         <Button type="primary" @click="handleSearch">查询</Button>
                     </Form>
@@ -36,7 +36,7 @@
                         </Dropdown>
                     </template>
                 </el-table-column>
-                <el-table-column label="系统工号" prop="userName"></el-table-column>
+                <el-table-column label="用户名" prop="userName"></el-table-column>
                 <el-table-column label="姓名" prop="realName"></el-table-column>
                 <el-table-column label="手机" prop="phone"></el-table-column>
                 <el-table-column label="邮箱" prop="email" width="200px"></el-table-column>

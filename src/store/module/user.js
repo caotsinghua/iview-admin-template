@@ -65,6 +65,7 @@ const actions = {
         commit('setHasGetInfo', false);
         commit('setUserInfo', {});
         commit('setAccess', []);
+        commit('setHasGetPrivs', false);
         if (router) {
             router.replace({
                 name: 'login'

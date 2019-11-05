@@ -9,7 +9,7 @@ export const getDicts = types =>
 
 export const addDict = data =>
     axios.request({
-        url: '/dicts/add',
+        url: '/dicts',
         data,
         method: 'post'
     });
