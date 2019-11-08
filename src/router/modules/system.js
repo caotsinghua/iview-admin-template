@@ -5,20 +5,11 @@ const systemRoutes = [
         name: 'system',
         component: Main,
         meta: {
-            title: '综合管理',
+            title: '系统管理',
             icon: 'md-cog',
             showAlways: true
         },
         children: [
-            {
-                path: 'dict-mgr',
-                meta: {
-                    title: '字典管理',
-                    icon: 'md-pricetags'
-                },
-                name: 'dict-mgr',
-                component: () => import('@/view/system/dict-mgr/dict-mgr.vue')
-            },
             {
                 path: 'users-mgr',
                 meta: {
@@ -38,22 +29,13 @@ const systemRoutes = [
                 component: () => import('@/view/system/roles-mgr/roles-mgr.vue')
             },
             {
-                path: 'privs-mgr',
+                path: 'configs-mgr',
+                name: 'configs-mgr',
                 meta: {
-                    title: '权限管理',
-                    icon: 'md-lock'
+                    title: '系统配置管理',
+                    icon: 'md-cog'
                 },
-                name: 'privs-mgr',
-                component: () => import('@/view/system/privs-mgr/privs-mgr.vue')
-            },
-            {
-                path:'configs-mgr',
-                name:'configs-mgr',
-                meta:{
-                    title:'系统配置管理',
-                    icon:'md-cog'
-                },
-                component:()=>import('@/view/system/configs-mgr/index.vue')
+                component: () => import('@/view/system/configs-mgr/index.vue')
             }
         ]
     }

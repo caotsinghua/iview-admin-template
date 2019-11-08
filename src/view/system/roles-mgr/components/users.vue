@@ -7,7 +7,12 @@
                 >
             </div>
         </header>
-        <el-table :data="storeState.users" v-loading="storeState.userLoading" empty-text="请先选择角色" size="mini">
+        <el-table
+            :data="storeState.users"
+            v-loading="storeState.userLoading"
+            empty-text="没有数据，请检查是否选择角色"
+            size="mini"
+        >
             <el-table-column prop="index" label="序号"></el-table-column>
             <el-table-column label="用户名" prop="userName"></el-table-column>
             <el-table-column label="姓名" prop="realName"></el-table-column>
@@ -15,7 +20,12 @@
             <el-table-column label="邮箱" prop="email" width="200"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="{ row }">
-                    <Button type="error" @click="handleDeleteRow(row)">删除</Button>
+                    <Button
+                        type="error"
+                        @click="handleDeleteRow(row)"
+                        v-if="!(row.sysFlag === '1' && storeState.selectRole.sysFlag === '1')"
+                        >删除</Button
+                    >
                 </template>
             </el-table-column>
         </el-table>

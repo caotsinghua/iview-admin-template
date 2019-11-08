@@ -65,9 +65,28 @@ export const getDeptUsers = query => {
     });
 };
 // 更新用户
-export const updateUser = data =>
-    axios.request({
-        url: `/users`,
+export const updateUser = data => {
+    const { userId } = data;
+    delete data.userId;
+    return axios.request({
+        url: `/users/${userId}`,
         data,
         method: 'put'
+    });
+};
+
+export const changeUserStatus = (userId, state) =>
+    axios.request({
+        url: `/users/${userId}/state`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: qs.stringify({ state }),
+        // data: { state },
+        method: 'post'
+    });
+
+export const getUserPrivs = userId =>
+    axios.request({
+        url: `/users/${userId}/privs`
     });

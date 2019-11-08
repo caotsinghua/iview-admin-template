@@ -13,11 +13,24 @@
                 size="mini"
             >
                 <el-table-column prop="roleName" label="角色名称"></el-table-column>
-                <el-table-column prop="roleType" label="角色类型" :formatter="roleTypeFormatter"> </el-table-column>
+                <!-- <el-table-column prop="roleType" label="角色类型" :formatter="roleTypeFormatter"> </el-table-column> -->
                 <el-table-column prop="remark" label="角色备注"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="{ row }">
-                        <Button type="error" @click.stop="handleDelete(row)" size="small" icon="md-trash"></Button>
+                        <Button
+                            type="error"
+                            @click.stop="handleDelete(row)"
+                            size="small"
+                            icon="md-trash"
+                            style="margin-right:5px"
+                            v-if="row.sysFlag !== '1'"
+                        ></Button>
+                        <Button
+                            type="warning"
+                            @click.stop="handleEdit(row)"
+                            size="small"
+                            icon="ios-create-outline"
+                        ></Button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -36,18 +49,8 @@
                 <FormItem label="角色名称" prop="roleName">
                     <Input v-model.trim="roleForm.roleName" />
                 </FormItem>
-                <FormItem label="角色备注" prop="remark">
+                <FormItem label="角色备注" prop="remark" v-if="!this.editRow">
                     <Input v-model.trim="roleForm.remark" />
-                </FormItem>
-                <FormItem label="角色编码" prop="roleCode">
-                    <Input v-model.trim="roleForm.roleCode" />
-                </FormItem>
-                <FormItem label="角色类型" prop="roleType">
-                    <Select v-model="roleForm.roleType">
-                        <Option v-for="dict in this[dictMap.role_type]" :key="dict.dictValue" :value="dict.dictValue">{{
-                            dict.dictLabel
-                        }}</Option>
-                    </Select>
                 </FormItem>
             </Form>
             <template slot="footer">
@@ -59,30 +62,23 @@
 </template>
 <script>
 import store from '../store';
-import { deleteRole, addRole } from '@/api/roles';
-import { dictMap } from '@/constants';
-import { mapState } from 'vuex';
+import { deleteRole, addRole, updateRole } from '@/api/roles';
 
 export default {
     data() {
         return {
             storeState: store.state,
             visible: false,
-            roleForm: { roleName: '', remark: '', roleCode: '', deptId: '', roleType: '' },
+            roleForm: { roleName: '', remark: '' },
             rules: {
-                roleName: [{ required: true, message: '该字段不能为空' }],
-                roleCode: [{ required: true, message: '该字段不能为空' }],
-                roleType: [{ required: true, message: '该字段不能为空' }]
+                roleName: [{ required: true, message: '该字段不能为空' }]
             },
-            dictMap
+            editRow: null // 是否编辑角色
         };
-    },
-    computed: {
-        ...mapState('system', [dictMap.role_type])
     },
     async mounted() {
         await store.getRoles();
-        console.log(this.$store.state);
+        this.toggleDefault();
     },
     methods: {
         handleDelete(role) {
@@ -93,7 +89,10 @@ export default {
                     const { data } = await deleteRole(role.roleId);
                     if (data.success) {
                         this.$Message.success('删除成功');
-                        store.getRoles();
+                        await store.getRoles();
+                        if (role.roleId === this.storeState.selectRoleId) {
+                            this.toggleDefault();
+                        }
                     }
                 }
             });
@@ -112,16 +111,33 @@ export default {
             this.$refs['role-form'].resetFields();
             this.visible = false;
         },
-        showModal() {
+        showModal(row) {
+            if (row) {
+                this.editRow = row;
+                this.roleForm.roleName = row.roleName;
+            } else {
+                this.editRow = null;
+            }
             this.visible = true;
+        },
+        handleEdit(row) {
+            this.showModal(row);
         },
         async handleSubmit() {
             const valid = await this.$refs['role-form'].validate();
             if (valid) {
                 const formData = { ...this.roleForm };
-                const { data } = await addRole(formData);
+                let data = {};
+                if (this.editRow) {
+                    const { data: tmpData } = await updateRole({ ...formData, roleId: this.editRow.roleId });
+                    data = tmpData;
+                } else {
+                    // 添加角色
+                    const { data: tmpData } = await addRole(formData);
+                    data = tmpData;
+                }
                 if (data.success) {
-                    this.$Message.success('添加成功');
+                    this.$Message.success(this.editRow ? '更新成功' : '添加成功');
                     store.getRoles();
                     this.hideModal();
                 }
@@ -139,13 +155,10 @@ export default {
         handleRolePageSizeChange(pageSize) {
             store.getRoles({ page: 1, pageSize });
         },
-        roleTypeFormatter(_, __, value) {
-            if (value) {
-                const findItem =
-                    this[dictMap.roleType] && this[dictMap.roleType].find(item => item.dictValue === value);
-                return findItem && findItem.dictLabel;
+        toggleDefault() {
+            if (this.storeState.roles.length > 0) {
+                this.handleRowClick(this.storeState.roles[0]);
             }
-            return value;
         }
     }
 };

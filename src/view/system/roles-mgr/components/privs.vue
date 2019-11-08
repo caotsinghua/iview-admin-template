@@ -8,7 +8,6 @@
         </header>
         <div class="tree-select-header">
             <span>权限名称</span>
-            <span>路由名称</span>
             <span>权限编码</span>
         </div>
         <treeselect
@@ -27,9 +26,6 @@
                     <Icon type="ios-leaf" v-else color="#19be6b" style="margin-right:5px;" />
                     <span class="label">{{ node.label }}</span>
                 </div>
-                <span class="item"
-                    ><Icon type="ios-link" color="#19be6b" style="margin-right:5px;" />{{ node.raw.privUri }}</span
-                >
                 <span class="item"
                     ><Icon type="md-code-working" color="#19be6b" style="margin-right:5px;" />{{
                         node.raw.privCode

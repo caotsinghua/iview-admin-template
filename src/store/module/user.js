@@ -89,7 +89,6 @@ const actions = {
         }
         const { data } = await getUserStatus();
         if (data.success && data.data) {
-            dispatch('system/getDicts');
             commit('setUserInfo', data.data);
             commit('setHasLogged', true);
             commit('setHasGetInfo', true);

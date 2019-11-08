@@ -36,13 +36,30 @@
                         </Dropdown>
                     </template>
                 </el-table-column>
+                <el-table-column label="状态">
+                    <template slot-scope="{ row }">
+                        <i-switch
+                            :true-value="0"
+                            :false-value="1"
+                            :value="row.state"
+                            @on-change="changeUserStatus(row)"
+                            :loading="row.loading"
+                            v-if="row.sysFlag != 1"
+                        ></i-switch>
+                    </template>
+                </el-table-column>
                 <el-table-column label="用户名" prop="userName"></el-table-column>
                 <el-table-column label="姓名" prop="realName"></el-table-column>
                 <el-table-column label="手机" prop="phone"></el-table-column>
                 <el-table-column label="邮箱" prop="email" width="200px"></el-table-column>
-                <el-table-column label="权限角色">
+                <el-table-column label="角色">
                     <template slot-scope="{ row }">
                         <a @click="handleShowUserRoles(row)">查看</a>
+                    </template>
+                </el-table-column>
+                <el-table-column label="权限">
+                    <template slot-scope="{ row }">
+                        <a @click="handleShowUserPrivs(row)">查看</a>
                     </template>
                 </el-table-column>
             </el-table>
@@ -64,6 +81,7 @@
             </Row>
             <EditModal ref="edit-modal" />
             <UserRolesModal ref="user-roles-modal" />
+            <UserPrivsModal ref="user-privs-modal" />
         </main>
     </div>
 </template>
@@ -71,11 +89,13 @@
 import store from '../store';
 import EditModal from './edit-modal';
 import UserRolesModal from './user-roles-modal';
-import { resetPassword } from '@/api/user';
+import { resetPassword, changeUserStatus } from '@/api/user';
+import UserPrivsModal from './privs-modal';
 export default {
     components: {
         EditModal,
-        UserRolesModal
+        UserRolesModal,
+        UserPrivsModal
     },
     data() {
         return {
@@ -121,6 +141,24 @@ export default {
         },
         handleShowUserRoles(row) {
             this.$refs['user-roles-modal'].show(row);
+        },
+        handleShowUserPrivs(row) {
+            this.$refs['user-privs-modal'].show(row);
+        },
+        async changeUserStatus(row) {
+            this.$set(row, 'loading', true);
+            try {
+                const { data } = await changeUserStatus(row.userId, row.state == 0 ? 1 : 0);
+                if (data.success) {
+                    this.$Message.success(row.state == 0 ? '禁用成功' : '启用成功');
+                    this.$set(row, 'state', row.state == 1 ? 0 : 1);
+                }
+            } catch (e) {
+                this.$Message.error(e.message || '脚本错误');
+                throw e;
+            } finally {
+                this.$set(row, 'loading', false);
+            }
         }
     }
 };

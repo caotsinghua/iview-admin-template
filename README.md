@@ -32,16 +32,16 @@ iView Admin
 `src/libs/common-utils.js`中
 
 -   用 getUserStatus（可获取用户信息和登陆态的接口）(/users/cur-user)判断登陆态和获取当前登陆用户的信息。
-    
+
 使用方法:
-    
+
     1. main.js 中引用 js 中引用 initAppByStatus
 2. 在 main.js 中调用
-    
+
 -   登陆状态保存在 store 中
     登陆状态是 store.state.user.hasLogged,一切对登陆态的判断都基于此。
     获取和设置登陆态的方法参考 store/user 中的 getUserStatus
-    
+
     ```
     // 获取用户信息和状态
     async getUserStatus({ commit }, status) {
@@ -88,23 +88,23 @@ iView Admin
 > ```
 
 -   使用
-    
+
     目前模板中`src/components/login-form`默认启用。注意标记TODO注释的地方。
-    
+
 -   不使用
     1. 将以下内容注释
-    
+
         ```
          <!-- 验证码相关 -->
                 <input type="hidden" id="contextId" />
                 <input type="hidden" id="accountIdHide" value="admin" />
                 <div id="containerId" style="border:1px solid #d7dde4;width:100%;height:46px;margin-bottom:10px;"></div>
                 <!-- end -->
-         
+
         ```
-    
+
     2. 去除mounted时的操作
-    
+
     3. 修改 handleSubmit 中的相关信息
        主要是提交登陆接口时传入的参数
 
@@ -160,13 +160,12 @@ computed: {
 
 ### 配置项
 
-在原有config/index.js中添加了三个字段.根据实际情况启用
+在原有config/index.js中添加了2个字段.根据实际情况启用
+如果启用权限管理，也必须配置管理员可见路由,此时系统管理模块不受服务端返回数据影响：
+1. 当前用户非管理员-分配系统管理权限=》不显示系统管理
+2. 当前用户是管理员-不管是否分配系统管理权限=》显示系统管理
 
-```json
-     /**
-     * @description 用户需要依赖部门管理
-     */
-    department: true,
+```jsons
     /**
      * @description 是否启用权限管理
      */

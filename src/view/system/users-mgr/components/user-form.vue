@@ -8,7 +8,6 @@
         <Row :gutter="10" type="flex">
             <Col :span="12">
                 <FormItem label="用户名" prop="userName">
-                    <!-- <p v-if="userId">{{ form.userName }}</p> -->
                     <Input v-model.trim="form.userName" />
                 </FormItem>
             </Col>
@@ -74,9 +73,7 @@ export default {
                     postData.deptId = store.state.curSelect.deptId;
                 }
                 let data;
-                console.log('userid', this.userId);
                 if (this.userId) {
-                    console.log('更新用户');
                     // 更新
                     postData.userId = this.userId;
                     const res = await updateUser(postData);
@@ -86,7 +83,7 @@ export default {
                     const res = await addUser(postData);
                     data = res.data;
                 }
-                success = data.code === '0';
+                success = data.code == '0';
                 if (success) {
                     this.$Message.success('操作成功');
                     store.getData();

@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 
 import user from './module/user';
 import app from './module/app';
-import system from './module/system';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -18,7 +17,6 @@ export default new Vuex.Store({
     },
     modules: {
         user,
-        app,
-        system
+        app
     }
 });

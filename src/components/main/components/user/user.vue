@@ -1,11 +1,10 @@
 <template>
     <div class="user-avatar-dropdown">
         <Dropdown @on-click="handleClick">
-            <Badge :dot="!!messageUnreadCount">
-                <Avatar style="background-color: #87d068" :title="userInfo.userName">
-                    {{ userInfo.userName && userInfo.userName[0] }}</Avatar
-                >
-            </Badge>
+            <Avatar style="background-color: #87d068;margin-right:5px;" :title="userInfo.realName">
+                {{ userInfo.userName && userInfo.userName[0] }}</Avatar
+            >
+            <span>{{ userInfo.userName }}</span>
             <Icon :size="18" type="md-arrow-dropdown"></Icon>
             <DropdownMenu slot="list">
                 <DropdownItem name="change-log">更新日志</DropdownItem>

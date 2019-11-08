@@ -56,9 +56,9 @@ function createRouterWithPermission() {
                     /**
                      * 是否是全局管理员？
                      * 需要针对管理员等用户直接显示的路由，不管权限有没有配置
-                     * 目前设为true
+                     *
                      */
-                    const isAdmin = roles && roles.some(role => role === 'A' || role === 'B');
+                    const isAdmin = roles && roles.some(role => role === 'A');
                     const { routes: parsedDynamicRoutes, menuMap } = mapPrivsDataToRouter(
                         privs,
                         dynamicRoutes,

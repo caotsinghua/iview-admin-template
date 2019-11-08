@@ -277,12 +277,12 @@ function toggleSystemRoutes(map, isAdmin) {
 export function mapPrivsDataToRouter(privs, routes, isAdmin) {
     const menuMap = {};
     privs.forEach(priv => {
-        if (priv.privUri && priv.privType !== 'A') {
-            menuMap[priv.privUri] = {
+        if (priv.privCode && priv.privType !== 'A') {
+            menuMap[priv.privCode] = {
                 ...priv,
                 icon: priv.privIcon,
-                path: priv.privUri,
-                name: priv.privUri
+                path: priv.privCode,
+                name: priv.privCode
             };
         }
     });

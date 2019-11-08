@@ -35,15 +35,11 @@ export default {
         // }
     },
     /**
-     * @description 用户需要依赖部门管理？true
-     */
-    department: true,
-    /**
      * @description 是否启用权限管理
      */
     usePermission: true,
     /**
      * @description 只有管理员可见的路由，usePermission时才有用，并且需要在router/index中设置判断管理员的条件
      */
-    adminRoutes: ['system', 'users-mgr', 'roles-mgr', 'privs-mgr', 'dict-mgr', 'configs-mgr']
+    adminRoutes: ['system', 'users-mgr', 'roles-mgr', 'configs-mgr']
 };

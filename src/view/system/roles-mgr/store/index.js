@@ -21,7 +21,8 @@ export default {
         privs: [],
         privLoading: false,
         allPrivs: [],
-        allPrivsTreeData: []
+        allPrivsTreeData: [],
+        selectRole: null
     },
     async getRoles(query = {}) {
         const page = query.page || this.state.rolePage;
@@ -40,12 +41,10 @@ export default {
         }
     },
     async toggle(row, setCurrentRow, vm) {
-        this.clear();
-        if (this.state.selectRoleId === row.roleId) {
-            this.state.selectRoleId = '';
-            setCurrentRow();
-        } else {
+        if (this.state.selectRoleId !== row.roleId) {
+            this.clear();
             this.state.selectRoleId = row.roleId;
+            this.state.selectRole = row;
             setCurrentRow(row);
             // debouncedGetPrivs.call(this);
             this.getUsers();
@@ -57,7 +56,6 @@ export default {
             } finally {
                 this.disableOtherRows(row, true);
             }
-            // vm.initTreeSelect();
         }
     },
     disableOtherRows(row, cancel = false) {
@@ -82,7 +80,8 @@ export default {
             privs: [],
             privLoading: false,
             allPrivs: [],
-            allPrivsTreeData: []
+            allPrivsTreeData: [],
+            selectRole: null
         });
     },
     async getUsers(query = {}) {
@@ -125,7 +124,7 @@ export default {
                 this.state.privs = data.data;
                 this.state.allPrivs = allPrivsData.data;
                 const allPrivsTreeData = parsePrivsToTreeDataWithChecked(allPrivsData.data, data.data, 0);
-                const adminRouteIndex = allPrivsTreeData.findIndex(item => item.privUri === 'system');
+                const adminRouteIndex = allPrivsTreeData.findIndex(item => item.privCode === 'system');
                 this.state.allPrivsTreeData = allPrivsTreeData.filter((_, index) => index !== adminRouteIndex); // 取消综合管理的权限分配
             }
         } finally {

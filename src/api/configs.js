@@ -30,9 +30,12 @@ export const updateConfigsBatch = data =>
         method: 'post',
         data
     });
-export const updateConfigByCode = data =>
-    axios.request({
-        url: `/configs/${data.configCode}`,
+export const updateConfigByCode = data => {
+    const { configCode } = data;
+    delete data.configCode;
+    return axios.request({
+        url: `/configs/${configCode}`,
         data,
-        method: 'post'
+        method: 'put'
     });
+};

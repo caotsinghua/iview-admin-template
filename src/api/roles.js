@@ -107,3 +107,12 @@ export const getUsersNotInRole = ({ roleId, currPage, pageSize, keyword }) =>
         url: `roles/not/${roleId}/users`,
         params: { currPage, pageSize, keyword }
     });
+export const updateRole = data => {
+    return axios.request({
+        url: `/roles/${data.roleId}`,
+        method: 'put',
+        data: {
+            roleName: data.roleName
+        }
+    });
+};
